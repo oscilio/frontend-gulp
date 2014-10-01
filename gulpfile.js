@@ -16,20 +16,22 @@ var gulp = require('gulp'),
     webserver = require('gulp-webserver'),
     del = require('del');
 
-//TODO: add sourcemaps for js
 //TODO: finish configuring webserver & livereload
 //TODO: html task
+//TODO: errors task
 
 gulp.task('js', function () {
   return gulp.src('app/js/**/*.js')
       //.pipe(jshint('.jshintrc'))
+      .pipe(sourcemaps.init())
       .pipe(jshint.reporter('default'))
       .pipe(concat('main.js'))
       .pipe(gulp.dest('dist/js'))
       .pipe(rename({suffix: '.min'}))
       .pipe(uglify())
+      .pipe(sourcemaps.write())
       .pipe(gulp.dest('dist/js'))
-      .pipe(notify({message: 'Scripts task complete'}));
+      .pipe(notify({message: 'JS task complete'}));
 });
 
 gulp.task('less', function () {
@@ -39,28 +41,31 @@ gulp.task('less', function () {
         paths: [path.join(__dirname, 'less', 'includes')]
       }))
       .pipe(sourcemaps.write())
-      .pipe(gulp.dest('./dist/css'));
+      .pipe(gulp.dest('./dist/css'))
+      .pipe(notify({message: 'Less task complete'}));
 });
 
-gulp.task('images', function () {
+gulp.task('img', function () {
   return gulp.src('app/img/**/*')
       .pipe(imagemin({optimizationLevel: 3, progressive: true, interlaced: true}))
       .pipe(gulp.dest('dist/img'))
-      .pipe(notify({message: 'Images task complete'}));
+      .pipe(notify({message: 'Images task complete'}))
+      .pipe(notify({message: 'Img task complete'}));
 });
 
 gulp.task('clean', function (cb) {
   del(['dist/css', 'dist/js', 'dist/img'], cb)
 });
 
+gulp.task('default', ['clean'], function () {
+  gulp.start('less', 'js', 'img', 'vulcanize');
+});
+
 gulp.task('vulcanize', function () {
   return gulp.src('app/components/index.html')
       .pipe(vulcanize({dest: 'dist/components'}))
-      .pipe(gulp.dest('dist/components'));
-})
-
-gulp.task('default', ['clean'], function () {
-  gulp.start('less', 'js', 'images');
+      .pipe(gulp.dest('dist/components'))
+      .pipe(notify({message: 'Vulcanize task complete'}));
 });
 
 gulp.task('watch', function () {
