@@ -36,7 +36,7 @@ gulp.task('html', function () {
 
 gulp.task('js', function () {
   return gulp.src('app/js/**/*.js')
-    //.pipe(jshint('.jshintrc'))
+      .pipe(jshint('.jshintrc'))
       .pipe(sourcemaps.init())
       .pipe(preprocess({
         context: {
