@@ -10,20 +10,40 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     notify = require('gulp-notify'),
     cache = require('gulp-cache'),
-    livereload = require('gulp-livereload'),
     sourcemaps = require('gulp-sourcemaps'),
     vulcanize = require('gulp-vulcanize'),
     webserver = require('gulp-webserver'),
+    preprocess = require('gulp-preprocess'),
     del = require('del');
 
-//TODO: finish configuring webserver & livereload
-//TODO: html task
+//TODO: test livereload
 //TODO: errors task
+//TODO: .jshintrc
+
+var api_url = 'localhost:3000',
+    node_env = 'production';
+
+gulp.task('html', function () {
+  return gulp.src('app/pages/**/*.html')
+      .pipe(preprocess({
+        context: {
+          NODE_ENV: node_env
+        }
+      }))
+      .pipe(gulp.dest('dist'))
+      .pipe(notify({message: 'HTML task complete'}));
+});
 
 gulp.task('js', function () {
   return gulp.src('app/js/**/*.js')
-      //.pipe(jshint('.jshintrc'))
+    //.pipe(jshint('.jshintrc'))
       .pipe(sourcemaps.init())
+      .pipe(preprocess({
+        context: {
+          NODE_ENV: node_env,
+          API_URL: api_url
+        }
+      }))
       .pipe(jshint.reporter('default'))
       .pipe(concat('main.js'))
       .pipe(gulp.dest('dist/js'))
@@ -57,7 +77,7 @@ gulp.task('clean', function (cb) {
 });
 
 gulp.task('default', ['clean'], function () {
-  gulp.start('less', 'js', 'img', 'vulcanize');
+  gulp.start('html', 'less', 'js', 'img', 'vulcanize');
 });
 
 gulp.task('vulcanize', function () {
@@ -74,7 +94,7 @@ gulp.task('watch', function () {
   gulp.watch('app/components/**/*', ['components']);
 });
 
-gulp.task('webserver', function() {
+gulp.task('webserver', function () {
   gulp.src('dist')
       .pipe(webserver({
         livereload: true,
