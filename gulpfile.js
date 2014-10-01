@@ -49,7 +49,6 @@ gulp.task('img', function () {
   return gulp.src('app/img/**/*')
       .pipe(imagemin({optimizationLevel: 3, progressive: true, interlaced: true}))
       .pipe(gulp.dest('dist/img'))
-      .pipe(notify({message: 'Images task complete'}))
       .pipe(notify({message: 'Img task complete'}));
 });
 
@@ -72,13 +71,17 @@ gulp.task('watch', function () {
   gulp.watch('app/css/**/*.scss', ['styles']);
   gulp.watch('app/js/**/*.js', ['scripts']);
   gulp.watch('app/img/**/*', ['images']);
+  gulp.watch('app/components/**/*', ['components']);
 });
 
 gulp.task('webserver', function() {
   gulp.src('dist')
       .pipe(webserver({
         livereload: true,
-        directoryListing: true,
+        directoryListing: {
+          enable: true,
+          path: 'dist'
+        },
         open: true
       }));
 });
