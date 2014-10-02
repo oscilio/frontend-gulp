@@ -20,6 +20,8 @@ var gulp = require('gulp'),
     gutil = require('gulp-util'),
     plumber = require('gulp-plumber'),
     del = require('del');
+
+_.str = require('underscore.string');
 // ========================================================
 
 // ==[ Error Handling ]====================================
@@ -88,7 +90,9 @@ var node_env = process.env.NODE_ENV || 'development',
     conf = _.extend(
         _.pick(pkg, 'title', 'description'),
         config['common'],
-        config[node_env]);
+        config[node_env],
+        { ustr: _.str } // makes underscore.str available in templates
+    );
 
 gulp.task('html', function () {
   return gulp.src('app/pages/**/*.html')
