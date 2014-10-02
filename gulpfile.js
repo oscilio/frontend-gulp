@@ -97,13 +97,21 @@ gulp.task('html', function () {
       .pipe(notify(_.extend(notifyConf,{message: 'HTML task complete'})));
 });
 
+//TODO: update jshint & js tasks so that one streams into the other, for efficiency
+gulp.task('jshint', function () {
+  return gulp.src('app/js/**/*.js')
+      .pipe(plumber({errorHandler: onWarning}))
+      .pipe(template(conf))
+      .pipe(jshint('.jshintrc'))
+      .pipe(jshint.reporter('default'))
+      .pipe(notify(_.extend(notifyConf,{message: 'JSHint task complete'})));
+});
+
 gulp.task('js', function () {
   return gulp.src('app/js/**/*.js')
       .pipe(plumber({errorHandler: onError}))
       .pipe(sourcemaps.init())
       .pipe(template(conf))
-      .pipe(jshint('.jshintrc'))
-      .pipe(jshint.reporter('default'))
       .pipe(concat('app.js'))
       .pipe(gulp.dest('dist/js'))
       .pipe(rename({suffix: '.min'}))
@@ -115,18 +123,19 @@ gulp.task('js', function () {
 
 gulp.task('less', function () {
   return gulp.src('./app/css/**/*.less')
+      .pipe(plumber({errorHandler: onError}))
       .pipe(sourcemaps.init())
       .pipe(less({
         paths: [path.join(__dirname, 'less', 'includes')]
       }))
       .pipe(sourcemaps.write())
       .pipe(gulp.dest('./dist/css'))
-      .on('error', onError)
       .pipe(notify(_.extend(notifyConf,{message: 'LESS task complete'})));
 });
 
 gulp.task('img', function () {
   return gulp.src('app/img/**/*')
+      .pipe(plumber({errorHandler: onError}))
       .pipe(imagemin({optimizationLevel: 3, progressive: true, interlaced: true}))
       .pipe(gulp.dest('dist/img'))
       .pipe(notify(_.extend(notifyConf,{message: 'Img task complete'})));
@@ -134,9 +143,9 @@ gulp.task('img', function () {
 
 gulp.task('vulcanize', function () {
   return gulp.src('app/components/build.html')
+      .pipe(plumber({errorHandler: onError}))
       .pipe(vulcanize({dest: 'dist/components'}))
       .pipe(gulp.dest('dist/components'))
-      .on('error', onError)
       .pipe(notify(_.extend(notifyConf,{message: 'Vulcanize task complete'})));
 });
 
@@ -145,14 +154,14 @@ gulp.task('clean', function (cb) {
 });
 
 gulp.task('default', ['clean'], function () {
-  gulp.start('html', 'less', 'js', 'img', 'vulcanize');
+  gulp.start('html', 'less', 'jshint', 'js', 'img', 'vulcanize');
 });
 
 gulp.task('watch', function () {
   fatalLevel = fatalLevel || 'off';
   gulp.watch('app/config.json', ['js', 'html']);
   gulp.watch('app/css/**/*.less', ['less']);
-  gulp.watch('app/js/**/*.js', ['js']);
+  gulp.watch('app/js/**/*.js', ['jshint', 'js']);
   gulp.watch('app/img/**/*', ['img']);
   gulp.watch('app/pages/**/*.html', ['html']);
   gulp.watch('app/components/build.html', ['vulcanize']);
