@@ -1,0 +1,13 @@
+{
+  "common": {
+    "api_url": "localhost:3000",
+    "app_js": "//js/app.js",
+    "app_css": "//css/app.css"
+  },
+  "development": {
+
+  },
+  "production": {
+
+  }
+}
