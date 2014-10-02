@@ -20,7 +20,6 @@ var gulp = require('gulp'),
     pkg = require('./package.json'),
     del = require('del');
 
-//TODO: add config.json to `gulp watch`
 //TODO: common piped task for multi-env configuration?
 //TODO: test livereload
 //TODO: setup basic angular app
@@ -98,6 +97,7 @@ gulp.task('vulcanize', function () {
 });
 
 gulp.task('watch', function () {
+  gulp.watch('app/config.json', ['js', 'html']);
   gulp.watch('app/css/**/*.less', ['less']);
   gulp.watch('app/js/**/*.js', ['js']);
   gulp.watch('app/img/**/*', ['img']);
