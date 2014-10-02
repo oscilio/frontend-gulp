@@ -180,13 +180,13 @@ gulp.task('watch', function () {
 gulp.task('webserver', function () {
   gulp.src('dist')
       .pipe(webserver({
-        livereload: {
-          filter: 'dist'
-        },
+        livereload: true,
         directoryListing: {
           enable: true,
           path: 'dist'
         },
+        port: 8000,
+        //https: true,
         open: true
       }));
 });
