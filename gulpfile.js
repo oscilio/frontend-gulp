@@ -1,6 +1,8 @@
 var gulp = require('gulp'),
+    _ = require('underscore'),
     less = require('gulp-less'),
     path = require('path'),
+    template = require('gulp-template'),
     autoprefixer = require('gulp-autoprefixer'),
     minifycss = require('gulp-minify-css'),
     jshint = require('gulp-jshint'),
@@ -14,38 +16,45 @@ var gulp = require('gulp'),
     vulcanize = require('gulp-vulcanize'),
     webserver = require('gulp-webserver'),
     preprocess = require('gulp-preprocess'),
+    config = require('./app/config.json'),
+    pkg = require('./package.json'),
     del = require('del');
 
+//TODO: add multi-environment configuration
+//TODO: common piped task for multi-env configuration?
+//TODO: pull site title from package.json name
+//TODO: rename main.css => app.css && main.js => app.js
 //TODO: test livereload
+//TODO: underscore/lodash for preprocessing [gulp-template](https://www.npmjs.org/package/gulp-template)
+//TODO: setup basic angular app
+//TODO: task for angular templates [gulp-html2tpl](https://www.npmjs.org/package/gulp-html2tpl)
+//TODO: alternate lib for angular templates [gulp-jst-concat](https://www.npmjs.org/package/gulp-jst-concat)
 //TODO: errors task
-//TODO: .jshintrc
+//TODO: polymer js/platform.js
+//TODO: google analytics config
+//TODO: gulp rss?
+//TODO: sitemap?
+//TODO: asset fingerprinting?
+//TODO: jshintrc - look at https://gist.github.com/connor/1597131
 
-var api_url = 'localhost:3000',
-    node_env = 'production';
+//merge env config into common config
+var node_env = process.env.NODE_ENV || 'development',
+    conf = _.extend(_.pick(pkg, 'title'), config['common'], config[node_env]);
 
 gulp.task('html', function () {
   return gulp.src('app/pages/**/*.html')
-      .pipe(preprocess({
-        context: {
-          NODE_ENV: node_env
-        }
-      }))
+      .pipe(template(conf))
       .pipe(gulp.dest('dist'))
       .pipe(notify({message: 'HTML task complete'}));
 });
 
 gulp.task('js', function () {
   return gulp.src('app/js/**/*.js')
-      .pipe(jshint('.jshintrc'))
       .pipe(sourcemaps.init())
-      .pipe(preprocess({
-        context: {
-          NODE_ENV: node_env,
-          API_URL: api_url
-        }
-      }))
+      .pipe(template(conf))
+      .pipe(jshint('.jshintrc'))
       .pipe(jshint.reporter('default'))
-      .pipe(concat('main.js'))
+      .pipe(concat('app.js'))
       .pipe(gulp.dest('dist/js'))
       .pipe(rename({suffix: '.min'}))
       .pipe(uglify())

@@ -1,2 +1,2 @@
 var bar = 'bar';
-var api_url = '/* @echo API_URL */' || 'development';
+var api_url = '<%= api_url || 'localhost:3000' %>' ;
