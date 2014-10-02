@@ -19,6 +19,7 @@ var gulp = require('gulp'),
     yargs = require('yargs'),
     gutil = require('gulp-util'),
     plumber = require('gulp-plumber'),
+    replace = require('gulp-replace'),
     del = require('del');
 
 _.str = require('underscore.string');
@@ -156,6 +157,8 @@ gulp.task('vulcanize', function () {
         csp: true,
         strip: (node_env === 'production' || node_env === 'staging')
       }))
+      // TODO: better way to resolve this than to use gulp-replace? open github issue?
+      .pipe(replace('../../vendor/bower/fontawesome/fonts', '../fonts'))
       .pipe(gulp.dest('dist/components'))
       .pipe(notify(_.extend(notifyConf,{message: 'Vulcanize task complete'})));
 });
