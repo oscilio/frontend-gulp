@@ -1,13 +1,24 @@
 {
   "common": {
     "api_url": "localhost:3000",
-    "app_js": "//js/app.js",
-    "app_css": "//css/app.css"
+    "assets_url": "//localhost:8000/",
+    "app_js": "js/app.js",
+    "app_css": "css/app.css",
+    "app_components": "components/build.html"
   },
   "development": {
 
   },
+  "staging": {
+    "googleAnalytics": {
+      "trackingId": "1234",
+      "domainName": "staging.five678.com"
+    }
+  },
   "production": {
-
+    "googleAnalytics": {
+      "trackingId": "1234",
+      "domainName": "five678.com"
+    }
   }
 }

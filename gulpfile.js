@@ -20,12 +20,9 @@ var gulp = require('gulp'),
     pkg = require('./package.json'),
     del = require('del');
 
-//TODO: add multi-environment configuration
+//TODO: add config.json to `gulp watch`
 //TODO: common piped task for multi-env configuration?
-//TODO: pull site title from package.json name
-//TODO: rename main.css => app.css && main.js => app.js
 //TODO: test livereload
-//TODO: underscore/lodash for preprocessing [gulp-template](https://www.npmjs.org/package/gulp-template)
 //TODO: setup basic angular app
 //TODO: task for angular templates [gulp-html2tpl](https://www.npmjs.org/package/gulp-html2tpl)
 //TODO: alternate lib for angular templates [gulp-jst-concat](https://www.npmjs.org/package/gulp-jst-concat)
@@ -36,10 +33,14 @@ var gulp = require('gulp'),
 //TODO: sitemap?
 //TODO: asset fingerprinting?
 //TODO: jshintrc - look at https://gist.github.com/connor/1597131
+//TODO: add 404.html and other templates
 
 //merge env config into common config
 var node_env = process.env.NODE_ENV || 'development',
-    conf = _.extend(_.pick(pkg, 'title'), config['common'], config[node_env]);
+    conf = _.extend(
+        _.pick(pkg, 'title', 'description'),
+        config['common'],
+        config[node_env]);
 
 gulp.task('html', function () {
   return gulp.src('app/pages/**/*.html')
@@ -90,7 +91,7 @@ gulp.task('default', ['clean'], function () {
 });
 
 gulp.task('vulcanize', function () {
-  return gulp.src('app/components/index.html')
+  return gulp.src('app/components/build.html')
       .pipe(vulcanize({dest: 'dist/components'}))
       .pipe(gulp.dest('dist/components'))
       .pipe(notify({message: 'Vulcanize task complete'}));
@@ -101,7 +102,7 @@ gulp.task('watch', function () {
   gulp.watch('app/js/**/*.js', ['js']);
   gulp.watch('app/img/**/*', ['img']);
   gulp.watch('app/pages/**/*.html', ['html']);
-  gulp.watch('app/components/index.html', ['components']);
+  gulp.watch('app/components/build.html', ['vulcanize']);
 });
 
 gulp.task('webserver', function () {
