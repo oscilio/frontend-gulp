@@ -64,20 +64,16 @@ function onWarning(error) {
 //TODO: fix path problems in components/build.html (wtf google-code-prettify, marked.js, context-free-parser.js)
 //TODO: stream jshint task into js task
 //TODO: common piped task for multi-env configuration?
-//TODO: generate for multiple environments simultaneously?
+//TODO: generate for multiple environments simultaneously? (multiple output folders)
 //TODO: FIX LiveReload
-//TODO: setup basic angular app
-//TODO: task for angular templates [gulp-html2tpl](https://www.npmjs.org/package/gulp-html2tpl)
-//TODO: alternate lib for angular templates [gulp-jst-concat](https://www.npmjs.org/package/gulp-jst-concat)
-//TODO: errors task
-//TODO: polymer js/platform.js
-//TODO: google analytics config
+//TODO: setup basic angular app with templates
 //TODO: gulp rss?
 //TODO: sitemap?
 //TODO: asset fingerprinting?
 //TODO: jshintrc - look at https://gist.github.com/connor/1597131
 //TODO: add 404.html and other templates
-
+//TODO: ensure Polymer.js and Platform.js are included in components/build.html
+//TODO: address Angular/Polymer SEO
 
 //gulp-notify defaults for completed tasks
 //  official config examples: https://github.com/mikaelbr/gulp-notify/blob/master/examples/gulpfile.js
@@ -85,7 +81,7 @@ var notifyConf = {
   title: "Gulp",
   subtitle: "Finished",
   sound: "Tink" // refer to OSX Sound Preferences
-}
+};
 
 //merge env config into common config
 var node_env = process.env.NODE_ENV || 'development',

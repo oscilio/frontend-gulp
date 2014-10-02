@@ -3,9 +3,22 @@
 A template for frontend web development with GulpJS, which includes:
 
 - Tasks for JS/JSHint, Less, Image compression, Web Components
-- Concatenation & Minification of JS, CSS, Polymer Components
+- Concatenation & Minification of JS, CSS, and your **Web Components**
+- Includes Polymer's core-elements & paper-elements
 - Error handling that doesn't break `gulp watch`
 - Nice gulp-notify configuration, with different sounds for success & failure
+
+## Getting Started
+
+1. `npm install -g bower gulp`
+1. `npm install`
+1. `bower install`
+1. `gulp` to build
+  - `gulp clean` to clean dist folder
+  - `export NODE_ENV=production && gulp` to build using production values set in `config.json`
+1. `gulp watch` to set up a filechange watch
+1. `gulp webserver` to run the gulp-webserver to serve static files
+1. Connect to [http://localhost:8000](http://localhost:8000)
 
 ## References
 
@@ -18,7 +31,10 @@ A template for frontend web development with GulpJS, which includes:
 ### Intro Blogs
 
 - [markgoodyear's gulp guide](http://markgoodyear.com/2014/01/getting-started-with-gulp/)
+- [Rome wasn't built with Gulp](http://www.adamlynch.com/rome-wasnt-built-with-gulp/#slide-0)
 - http://travismaynard.com/writing/getting-started-with-gulp
+- http://ilikekillnerds.com/2014/07/how-to-basic-tasks-in-gulp-js/
+- http://blog.overzealous.com/post/74121048393/why-you-shouldnt-create-a-gulp-plugin-or-how-to-stop
 
 ### Error Handling Blogs
 
@@ -29,3 +45,12 @@ A template for frontend web development with GulpJS, which includes:
 
 - [gulp-vulcanize](https://www.npmjs.org/package/gulp-vulcanize)
 - [vulcanize options](https://github.com/Polymer/grunt-vulcanize#options) (grunt & gulp plugins use same format)
+
+### Gulp & Angular Templates
+
+- https://www.npmjs.org/package/gulp-angular-templates
+- https://www.npmjs.org/package/gulp-angular-templatecache
+
+### Polymer/Angular SEO
+
+- https://www.youtube.com/watch?v=inIIyR7hN8M&feature=youtu.be
