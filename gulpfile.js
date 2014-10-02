@@ -147,6 +147,13 @@ gulp.task('img', function () {
       .pipe(notify(_.extend(notifyConf,{message: 'Img task complete'})));
 });
 
+gulp.task('fonts', function () {
+  return gulp.src('vendor/bower/fontawesome/fonts/*')
+      .pipe(plumber({errorHandler: onError}))
+      .pipe(gulp.dest('dist/fonts'))
+      .pipe(notify(_.extend(notifyConf,{message: 'Fonts task complete'})));
+});
+
 gulp.task('vulcanize', function () {
   return gulp.src('app/components/build.html')
       .pipe(plumber({errorHandler: onError}))
@@ -164,11 +171,11 @@ gulp.task('vulcanize', function () {
 });
 
 gulp.task('clean', function (cb) {
-  del(['dist/css', 'dist/js', 'dist/img', 'dist/components', 'dist/index.html'], cb)
+  del(['dist/css', 'dist/js', 'dist/img', 'dist/components', 'dist/fonts', 'dist/index.html'], cb)
 });
 
 gulp.task('default', ['clean'], function () {
-  gulp.start('html', 'less', 'jshint', 'js', 'img', 'vulcanize');
+  gulp.start('html', 'less', 'jshint', 'js', 'img', 'vulcanize', 'fonts');
 });
 
 gulp.task('watch', function () {
