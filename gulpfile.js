@@ -153,7 +153,8 @@ gulp.task('vulcanize', function () {
         // refer here for options: https://github.com/Polymer/grunt-vulcanize#options
         dest: 'dist/components',
         inline: true,
-        csp: true
+        csp: true,
+        strip: (node_env === 'production' || node_env === 'staging')
       }))
       .pipe(gulp.dest('dist/components'))
       .pipe(notify(_.extend(notifyConf,{message: 'Vulcanize task complete'})));
