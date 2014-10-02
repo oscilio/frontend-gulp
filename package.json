@@ -1,7 +1,7 @@
 {
   "name": "frontend-gulp",
   "title": "frontend-gulp",
-  "description": "A frontend app template using gulp, polymer, and angular.",
+  "description": "A Frontend App Template with Polymer and Angular, using GulpJS to manage the asset pipeline.",
   "version": "0.0.1",
   "private": true,
   "author": {
