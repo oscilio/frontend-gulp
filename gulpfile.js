@@ -24,7 +24,8 @@ var gulp = require('gulp'),
 
 // ==[ Error Handling ]====================================
 // `gulp --fatal=error` determines what kind of errors should be fatal
-// see for more info: http://www.artandlogic.com/blog/2014/05/error-handling-in-gulp/
+// - see for more info: http://www.artandlogic.com/blog/2014/05/error-handling-in-gulp/
+// - more examples: http://truongtx.me/2014/07/15/handle-errors-while-using-gulp-watch/
 
 var fatalLevel = yargs.argv.fatal,
     ERROR_LEVELS = ['error', 'warning'];
@@ -60,9 +61,11 @@ function onWarning(error) {
 
 // ========================================================
 
-//TODO: pull out jshint task from js task
+//TODO: fix path problems in components/build.html (wtf google-code-prettify, marked.js, context-free-parser.js)
+//TODO: stream jshint task into js task
 //TODO: common piped task for multi-env configuration?
-//TODO: test livereload
+//TODO: generate for multiple environments simultaneously?
+//TODO: FIX LiveReload
 //TODO: setup basic angular app
 //TODO: task for angular templates [gulp-html2tpl](https://www.npmjs.org/package/gulp-html2tpl)
 //TODO: alternate lib for angular templates [gulp-jst-concat](https://www.npmjs.org/package/gulp-jst-concat)
@@ -75,7 +78,9 @@ function onWarning(error) {
 //TODO: jshintrc - look at https://gist.github.com/connor/1597131
 //TODO: add 404.html and other templates
 
+
 //gulp-notify defaults for completed tasks
+//  official config examples: https://github.com/mikaelbr/gulp-notify/blob/master/examples/gulpfile.js
 var notifyConf = {
   title: "Gulp",
   subtitle: "Finished",
@@ -144,7 +149,12 @@ gulp.task('img', function () {
 gulp.task('vulcanize', function () {
   return gulp.src('app/components/build.html')
       .pipe(plumber({errorHandler: onError}))
-      .pipe(vulcanize({dest: 'dist/components'}))
+      .pipe(vulcanize({
+        // refer here for options: https://github.com/Polymer/grunt-vulcanize#options
+        dest: 'dist/components',
+        inline: true,
+        csp: true
+      }))
       .pipe(gulp.dest('dist/components'))
       .pipe(notify(_.extend(notifyConf,{message: 'Vulcanize task complete'})));
 });
@@ -170,7 +180,9 @@ gulp.task('watch', function () {
 gulp.task('webserver', function () {
   gulp.src('dist')
       .pipe(webserver({
-        livereload: true,
+        livereload: {
+          filter: 'dist'
+        },
         directoryListing: {
           enable: true,
           path: 'dist'

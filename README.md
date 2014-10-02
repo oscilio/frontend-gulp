@@ -24,3 +24,8 @@ A template for frontend web development with GulpJS, which includes:
 
 - [Error Handling in GulpJS](http://www.artandlogic.com/blog/2014/05/error-handling-in-gulp/)
 - [Handle Errors While Using Gulp Watch](http://truongtx.me/2014/07/15/handle-errors-while-using-gulp-watch/)
+
+### Vulcanize Web Components
+
+- [gulp-vulcanize](https://www.npmjs.org/package/gulp-vulcanize)
+- [vulcanize options](https://github.com/Polymer/grunt-vulcanize#options) (grunt & gulp plugins use same format)
