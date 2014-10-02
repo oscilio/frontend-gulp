@@ -4,7 +4,9 @@
   <title><%= title %></title>
   <link rel="stylesheet" type="text/css" href="<%= assets_url + app_css %>" media="all"/>
   <link rel="icon" type="image/png" href="<%= assets_url %>img/favicon.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body fullbleed layout vertical>
 
@@ -20,15 +22,20 @@
   </script>
 <% } %>
 
-
 <core-scroll-header-panel flex condenses>
+
   <core-toolbar class="tall">
+    <!-- TODO: finish the core-toolbar nav-menu -->
+    <!-- TODO: replace icons with font-awesome icons? -->
     <core-icon-button icon="arrow-back"></core-icon-button>
     <div flex></div>
     <core-icon-button icon="search"></core-icon-button>
     <core-icon-button icon="more-vert"></core-icon-button>
-    <div class="bottom indent title"><h1><%= title %></h1></div>
+    <div class="bottom indent title"><h1><%= ustr.titleize(title) %></h1></div>
   </core-toolbar>
+
+  <!-- TODO: update body for each page -->
+
   <div content>
     <h2><%= description %></h2>
     <lorem-ipsum paragraphs="100"></lorem-ipsum>
@@ -36,16 +43,23 @@
 
 </core-scroll-header-panel>
 
-
-
-<!-- TODO: nav core-toolbar -->
-<!-- TODO: body -->
 <!-- TODO: footer -->
-
-<!-- TODO: link to js/platform.js -->
-<!-- TODO: link to components/index.html -->
+<!-- TODO: link to js/platform.js? -- ensure browser compatibility -->
 
   <script type="text/javascript" src="<%= assets_url + app_js %>"></script>
   <link rel="import" type="text/html" href="<%= assets_url + app_components %>"/>
+
+  <script>
+    // custom transformation: scale core-scroll-header-panel's title
+    //TODO: create a custom element, based on core-scroll-header-panel, which has this transition set
+    var titleStyle = document.querySelector('.title').style;
+    addEventListener('core-header-transform', function(e) {
+      var d = e.detail;
+      var m = d.height - d.condensedHeight;
+      var scale = Math.max(0.75, (m - d.y) / (m / 0.25)  + 0.75);
+      titleStyle.transform = titleStyle.webkitTransform =
+          'scale(' + scale + ') translateZ(0)';
+    });
+  </script>
 </body>
 </html>
