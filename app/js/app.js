@@ -40,9 +40,9 @@ var app = angular.module("app",
             controller: 'HomeCtrl'
           })
 
-          .state('features', {
-            url: "/features",
-            templateUrl: "features.html",
+          .state('about', {
+            url: "/about",
+            templateUrl: "about.html",
             controller: 'HomeCtrl'
           })
 
@@ -153,7 +153,7 @@ var app = angular.module("app",
       //==================
       // authentication
       //==================
-      var routesThatDontRequireAuth = ['/login', '/home', '/features', '/explore', '/error'];
+      var routesThatDontRequireAuth = ['/login', '/home', '/about', '/explore', '/error'];
 
       // check if current location matches route
       var routeClean = function (route) {
