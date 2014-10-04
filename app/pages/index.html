@@ -8,7 +8,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
 </head>
-<body fullbleed layout vertical>
+<body ng-cloak>
 
 <% if(typeof googleAnalytics != 'undefined') { %>
   <script> <!-- ganalytics -->
@@ -22,47 +22,15 @@
   </script>
 <% } %>
 
-<core-scroll-header-panel flex condenses>
-
-  <core-toolbar class="tall">
-    <!-- TODO: finish the core-toolbar nav-menu -->
-    <!-- TODO: replace icons with font-awesome icons? -->
-    <font-awesome icon="home"></font-awesome>
-    <core-icon-button icon="arrow-back"></core-icon-button>
-    <div flex></div>
-    <core-icon-button icon="search"></core-icon-button>
-    <core-icon-button icon="more-vert"></core-icon-button>
-
-    <div class="bottom indent title"><h1><%= ustr.titleize(title) %></h1></div>
-    <paper-shadow id="myShadow" z="2"></div>
-  </core-toolbar>
-
-  <!-- TODO: update body for each page -->
-
-  <div content>
-    <h2><%= description %></h2>
-    <lorem-ipsum paragraphs="100"></lorem-ipsum>
+  <div class="row">
+    <div class="large-12">
+      <h1>A Lineman Angular Setup</h1>
+      <div id="view" ng-view></div>
+    </div>
   </div>
-
-</core-scroll-header-panel>
-
-<!-- TODO: footer -->
-<!-- TODO: link to js/platform.js? -- ensure browser compatibility -->
 
   <script type="text/javascript" src="<%= assets_url + app_js %>"></script>
   <link rel="import" type="text/html" href="<%= assets_url + app_components %>"/>
 
-  <script>
-    // custom transformation: scale core-scroll-header-panel's title
-    //TODO: create a custom element, based on core-scroll-header-panel, which has this transition set
-    var titleStyle = document.querySelector('.title').style;
-    addEventListener('core-header-transform', function(e) {
-      var d = e.detail;
-      var m = d.height - d.condensedHeight;
-      var scale = Math.max(0.75, (m - d.y) / (m / 0.25)  + 0.75);
-      titleStyle.transform = titleStyle.webkitTransform =
-          'scale(' + scale + ') translateZ(0)';
-    });
-  </script>
 </body>
 </html>
