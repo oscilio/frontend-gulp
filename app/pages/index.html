@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="app">
 <head>
+  <script type="text/javascript">
+    apiUrl = "<%= api_url %>";
+  </script>
   <title><%= title %></title>
   <link rel="stylesheet" type="text/css" href="<%= assets_url + app_css %>" media="all"/>
   <link rel="icon" type="image/png" href="<%= assets_url %>img/favicon.ico">
@@ -22,15 +25,20 @@
   </script>
 <% } %>
 
-  <div class="row">
-    <div class="large-12">
-      <h1>A Lineman Angular Setup</h1>
-      <div id="view" ng-view></div>
+  <header navbar-widget></header>
+
+  <div class="container-fluid" id="main">
+    <div id="view" ui-view></div>
+  </div>
+
+  <div id="footer">
+    <div class="container-fluid">
+      <!-- TODO: site configuration for author -->
+      <p class="text-muted text-center">&copy; <%= new Date().getFullYear() %> David Conner</p>
     </div>
   </div>
 
   <script type="text/javascript" src="<%= assets_url + app_js %>"></script>
-  <link rel="import" type="text/html" href="<%= assets_url + app_components %>"/>
 
 </body>
 </html>
