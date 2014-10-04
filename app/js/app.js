@@ -59,6 +59,16 @@ var app = angular.module("app",
 //            })
 
         // authenticated routes
+        // TODO: /pulses - your newsfeeds
+        // TODO: /pulses/:id - a newsfeed
+        // TODO: /followers
+        // TODO: /following
+        // TODO: /top/tags
+        // TODO: /top/instruments
+        // TODO: /top/artist
+        // TODO: /top/genres
+        // TODO: /top/instruments
+        // TODO: /users/:id
 
           .state('users', {
             url: "/users",
