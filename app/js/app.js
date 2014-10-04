@@ -41,12 +41,6 @@ var app = angular.module("app",
             controller: 'HomeCtrl'
           })
 
-          .state('about', {
-            url: "/about",
-            templateUrl: "about.html",
-            controller: 'HomeCtrl'
-          })
-
           .state('error', {
             url: "/error",
             templateUrl: "error.html",
