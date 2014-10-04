@@ -32,3 +32,14 @@ app.directive('navbarWidget', function() {
     templateUrl: 'directives/navbar-widget.html'
   };
 });
+
+app.directive('exploreSoundWidget', function() {
+  return {
+    restrict: 'E',
+    replace: true,
+    scope: {
+      sound: '='
+    },
+    templateUrl: 'directives/explore-sound.html'
+  };
+});

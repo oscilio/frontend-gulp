@@ -12,6 +12,50 @@ app.controller('HomeCtrl', function($scope, $location, AuthenticationService) {
   };
 });
 
+app.controller("ExploreCtrl", function($scope, $location, AuthenticationService) {
+  $scope.sounds = [
+    {
+      id: '1',
+      user: {
+        username: 'dcunit3d'
+      },
+      title: 'New 808 Drumkit Config',
+      post: 'Sick new #drumkit using the classic $Roland808, cant fake that sound #electrofunk',
+      soundbyteUrl: ''
+    },
+    {
+      id: '2',
+      user: {
+        username: 'Edit'
+      },
+      title: 'Nu Glitch Sound',
+      post: 'Just posted this $Massive #nuGlitch byte, check it out @kraddy',
+      soundbyteUrl: ''
+    },
+    {
+      id: '3',
+      user: {
+        username: 'kraddy'
+      },
+      title: '2014 Tour Byte',
+      post: 'Check out our #NewSound from the @GlitchMob show in #NYC!',
+      soundbyteUrl: ''
+    },
+    {
+      id: '4',
+      user: {
+        username: 'ooah'
+      },
+      title: 'New Bass Kick',
+      //http://www.powerdrumkit.com/download.htm
+      post: 'Sick new #Bass #Kick using the $MTPowerDrumKit2 #Free #VST',
+      soundbyteUrl: ''
+    }
+  ];
+
+
+});
+
 app.controller("NavbarCtrl", function($scope, $location, $modal, AuthenticationService, Session, RegistrationService) {
 
   $scope.isActive = function(viewLocation) {

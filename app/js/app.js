@@ -38,7 +38,7 @@ var app = angular.module("app",
           .state('explore', {
             url: "/explore",
             templateUrl: "explore.html",
-            controller: 'HomeCtrl'
+            controller: 'ExploreCtrl'
           })
 
           .state('error', {
