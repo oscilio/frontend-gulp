@@ -2,6 +2,7 @@ var app = angular.module("app",
     ['ngRoute',
       'ngCookies',
       'ngResource',
+      'firebase',
       'ui.bootstrap',
       'ui.router'])
 
