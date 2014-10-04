@@ -5,12 +5,14 @@
     "app_js": "js/app.js",
     "app_css": "css/app.css",
     "app_components": "components/build.html",
-    "build_folder": "dist"
+    "build_folder": "dist",
+    "firebase_app": "amber-heat-7871"
   },
   "development": {
 
   },
   "divshot": {
+    "firebase_app": "amber-heat-7871",
     "assets_url": "//development.oscillate.divshot.io/",
     "build_folder": "divshot"
   },
@@ -21,9 +23,12 @@
     }
   },
   "production": {
+    "firebase_app": "oscil-io",
+    "assets_url": "//oscil.io/",
+    "build_folder": "divshot",
     "googleAnalytics": {
       "trackingId": "1234",
-      "domainName": "five678.com"
+      "domainName": "oscil.io"
     }
   }
 }

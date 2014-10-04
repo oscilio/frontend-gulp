@@ -128,7 +128,10 @@ var vendorJsFiles = [
   "vendor/bower/angular-route/angular-route.js",
   "vendor/bower/angular-resource/angular-resource.js",
   "vendor/bower/angular-bootstrap/ui-bootstrap-tpls.js",
-  "vendor/bower/angular-ui-router/release/angular-ui-router.js"
+  "vendor/bower/angular-ui-router/release/angular-ui-router.js",
+  "vendor/bower/firebase/firebase.js",
+  "vendor/bower/angularfire/dist/angularfire.js"
+    //TODO: firebase-simple-login
 ];
 
 var appJsFiles = [
@@ -241,7 +244,7 @@ gulp.task('watch', function () {
   fatalLevel = fatalLevel || 'off';
   gulp.watch('app/config.json', ['js', 'html']);
   gulp.watch('app/css/**/*.less', ['less']);
-  gulp.watch(['app/js/**/*.js', 'app/templates/**.*.html'], ['jshint', 'js']);
+  gulp.watch(['app/js/**/*.js', 'app/templates/**/*.html'], ['jshint', 'js']);
   gulp.watch('app/img/**/*', ['img']);
   gulp.watch('app/pages/**/*.html', ['html']);
   gulp.watch('app/components/build.html', ['vulcanize']);
