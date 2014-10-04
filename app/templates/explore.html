@@ -1,4 +1,29 @@
 <div class="row">
+  <div class="col-sm-12">
+    <div class="well well-lg">
+      <h1 class="text-center hidden-xs">
+        <span class="font-title">Oscillate</span>
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-square fa-stack-2x"></i>
+          <i class="fa fa-music fa-stack-1x fa-inverse stacked-icon-gray"></i>
+        </span>
+        <small>Today's Top Sounds</small>
+      </h1>
+      <h2 class="text-center visible-xs">
+        <div class="font-title">
+          <span class="fa-stack fa-lg">
+            <i class="fa fa-square fa-stack-2x"></i>
+            <i class="fa fa-music fa-stack-1x fa-inverse stacked-icon-gray"></i>
+          </span>
+          Oscillate
+        </div>
+        <small>Today's Top Sounds</small>
+      </h2>
+    </div>
+  </div>
+</div>
+
+<div class="row">
   <div class="col-sm-3" ng-repeat="sound in sounds">
     <!-- TODO: ng-animate? -->
     <explore-sound-widget sound="sound"/>

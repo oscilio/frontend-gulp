@@ -8,11 +8,11 @@
     <h4>{{ sound.post }}</h4>
   </div>
   <div class="panel-footer">
-    <span class="fa-stack fa-lg pull-left ">
-      <i class="fa fa-circle fa-stack-2x"></i>
-      <i class="fa fa-play fa-stack-1x fa-inverse stacked-icon-gray"></i>
-    </span>
-
     <paper-slider id="sound-slider-{{sound.id}}" sound-id="" editable="false" min="0" max="1500"></paper-slider>
+    <div class="btn-group open">
+      <!-- TODO: fa-stack play icon? -->
+      <a class="btn btn-primary" href="#"><i class="fa fa-play fa-fw fa-lg"></i> Play</a>
+      <a class="btn btn-info" href="#"><i class="fa fa-retweet fa-fw fa-lg"></i> Re-Pulse</a>
+    </div>
   </div>
 </div>
