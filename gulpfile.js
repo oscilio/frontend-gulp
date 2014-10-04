@@ -139,13 +139,16 @@ var appJsFiles = [
   "app/js/**/*.js"
 ];
 
-gulp.task('js', function () {
-  //TODO: Problems with order of completion? need callbacks?
-  //TODO: get this to work with pipes, instead of tempfiles
-  var ngTemplates = gulp.src('app/templates/**/*.html')
+gulp.task('ngtemplates', function() {
+  return ngTemplates = gulp.src('app/templates/**/*.html')
       .pipe(templateCache({module: 'app'}))
       .pipe(htmlify())
       .pipe(gulp.dest('temp'));
+});
+
+gulp.task('js', ['ngtemplates'], function () {
+  //TODO: Problems with order of completion? need callbacks?
+  //TODO: get this to work with pipes, instead of tempfiles
 
   return gulp.src(vendorJsFiles.concat(appJsFiles).concat(['temp/templates.js']))
       .pipe(plumber({errorHandler: onError}))
