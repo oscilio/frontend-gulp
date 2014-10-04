@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <link rel="stylesheet" type="text/css" href="<%= assets_url + app_css %>" media="all"/>
+  <link rel="icon" type="image/png" href="<%= assets_url %>img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+<body fullbleed layout vertical>
+
+<% if(typeof googleAnalytics != 'undefined') { %>
+<script> <!-- ganalytics -->
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', '<%= googleAnalytics.trackingID %>', '<%= googleAnalytics.domainName %>');
+ga('send', 'pageview');
+</script>
+<% } %>
+
+<core-scroll-header-panel flex condenses>
+
+  <core-toolbar class="tall">
+    <!-- TODO: finish the core-toolbar nav-menu -->
+    <!-- TODO: replace icons with font-awesome icons? -->
+    <font-awesome icon="home"></font-awesome>
+    <core-icon-button icon="arrow-back"></core-icon-button>
+    <div flex></div>
+    <core-icon-button icon="search"></core-icon-button>
+    <core-icon-button icon="more-vert"></core-icon-button>
+
+    <div class="bottom indent title"><h1><%= ustr.titleize(title) %></h1></div>
+    <paper-shadow id="myShadow" z="2"></paper-shadow>
+  </core-toolbar>
+
+  <!-- TODO: update body for each page -->
+
+  <div content>
+    <h2><%= description %></h2>
+    <h3>The page doesn't render very well with the Bootstrap CSS in place.</h3>
+    <lorem-ipsum paragraphs="100"></lorem-ipsum>
+  </div>
+
+</core-scroll-header-panel>
+
+<!-- TODO: footer -->
+<!-- TODO: link to js/platform.js? -- ensure browser compatibility -->
+
+<script type="text/javascript" src="<%= assets_url + app_js %>"></script>
+<link rel="import" type="text/html" href="<%= assets_url + app_components %>"/>
+
+<script>
+  // custom transformation: scale core-scroll-header-panel's title
+  //TODO: create a custom element, based on core-scroll-header-panel, which has this transition set
+  var titleStyle = document.querySelector('.title').style;
+  addEventListener('core-header-transform', function(e) {
+    var d = e.detail;
+    var m = d.height - d.condensedHeight;
+    var scale = Math.max(0.75, (m - d.y) / (m / 0.25)  + 0.75);
+    titleStyle.transform = titleStyle.webkitTransform =
+        'scale(' + scale + ') translateZ(0)';
+  });
+</script>
+
+</body>
+</html>
