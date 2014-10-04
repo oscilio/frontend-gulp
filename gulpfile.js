@@ -99,11 +99,13 @@ var node_env = process.env.NODE_ENV || 'development',
         { ustr: _.str } // makes underscore.str available in templates
     );
 
+var buildFolder = conf["build_folder"] || "dist";
+
 gulp.task('html', function () {
   return gulp.src('app/pages/**/*.html')
       .pipe(plumber({errorHandler: onError}))
       .pipe(template(conf))
-      .pipe(gulp.dest('dist'))
+      .pipe(gulp.dest(buildFolder))
       .pipe(notify(_.extend(notifyConf,{message: 'HTML task complete'})));
 });
 
@@ -150,7 +152,7 @@ gulp.task('js', function () {
       .pipe(concat('app.js'))
       .pipe(sourcemaps.write())
       //TODO: fix uglify?
-      .pipe(gulp.dest('dist/js'))
+      .pipe(gulp.dest(buildFolder + '/js'))
       .pipe(notify(_.extend(notifyConf,{message: 'JS task complete'})));
 
   //return gulp.src(vendorJsFiles.concat(appJsFiles))
@@ -159,7 +161,7 @@ gulp.task('js', function () {
   //    .pipe(sourcemaps.init())//TODO: fix sourcemaps with multiple sources
   //    .pipe(concat('app.js'))
   //    .pipe(sourcemaps.write())
-  //    .pipe(gulp.dest('dist/js'))
+  //    .pipe(gulp.dest(buildFolder + '/js'))
   //  //TODO: fix uglify?
   //    .pipe(uglify())
   //    .pipe(rename({suffix: '.min'}))
@@ -183,7 +185,7 @@ gulp.task('less', function () {
       .pipe(less({
         paths: [path.join(__dirname, 'less', 'includes')]
       }))
-      .pipe(gulp.dest('./dist/css'))
+      .pipe(gulp.dest(buildFolder + '/css'))
       .pipe(rename({suffix: '.min'}))
       .pipe(sourcemaps.write())
       .pipe(notify(_.extend(notifyConf,{message: 'LESS task complete'})));
@@ -193,14 +195,14 @@ gulp.task('img', function () {
   return gulp.src('app/img/**/*')
       .pipe(plumber({errorHandler: onError}))
       .pipe(imagemin({optimizationLevel: 3, progressive: true, interlaced: true}))
-      .pipe(gulp.dest('dist/img'))
+      .pipe(gulp.dest(buildFolder + '/img'))
       .pipe(notify(_.extend(notifyConf,{message: 'Img task complete'})));
 });
 
 gulp.task('fonts', function () {
   return gulp.src(['vendor/bower/fontawesome/fonts/*', 'vendor/bower/bootstrap/fonts/*'])
       .pipe(plumber({errorHandler: onError}))
-      .pipe(gulp.dest('dist/fonts'))
+      .pipe(gulp.dest(buildFolder + '/fonts'))
       .pipe(notify(_.extend(notifyConf,{message: 'Fonts task complete'})));
 });
 
@@ -209,19 +211,26 @@ gulp.task('vulcanize', function () {
       .pipe(plumber({errorHandler: onError}))
       .pipe(vulcanize({
         // refer here for options: https://github.com/Polymer/grunt-vulcanize#options
-        dest: 'dist/components',
+        dest: buildFolder + '/components',
         inline: true,
         csp: true,
         strip: (node_env === 'production' || node_env === 'staging')
       }))
       // TODO: better way to resolve this than to use gulp-replace? open github issue?
       .pipe(replace('../../vendor/bower/fontawesome/fonts', '../fonts'))
-      .pipe(gulp.dest('dist/components'))
+      .pipe(gulp.dest(buildFolder + '/components'))
       .pipe(notify(_.extend(notifyConf,{message: 'Vulcanize task complete'})));
 });
 
 gulp.task('clean', function (cb) {
-  del(['dist/css', 'dist/js', 'dist/img', 'dist/components', 'dist/fonts', 'dist/index.html', 'dist/templates.js'], cb)
+  del([buildFolder + '/css',
+    buildFolder + '/js',
+    buildFolder + '/img',
+    buildFolder + '/components',
+    buildFolder + '/fonts',
+    buildFolder + '/index.html',
+    buildFolder + '/templates.js'],
+      cb)
 });
 
 gulp.task('default', ['clean'], function () {
