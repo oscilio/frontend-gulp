@@ -27,8 +27,8 @@
     "assets_url": "//oscil.io/",
     "build_folder": "divshot",
     "googleAnalytics": {
-      "trackingId": "1234",
-      "domainName": "oscil.io"
+      "trackingId": "UA-55426307-1",
+      "domainName": "auto"
     }
   }
 }
