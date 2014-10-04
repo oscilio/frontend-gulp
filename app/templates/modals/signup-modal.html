@@ -1,0 +1,38 @@
+<form id="signup-modal" ng-submit="ok()" role="form">
+  <div class="modal-header bg-primary">
+    <h3><i class="fa fa-users fa-lg"></i>&nbsp;&nbsp;Sign Up</h3>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="signupEmail">Email address</label>
+      <input type="email" id="signupEmail" name="email" placeholder="Enter Email" ng-model="signup.email" required="required" class="form-control"/>
+    </div>
+    <div class="form-group">
+      <label for="signupUsername">Username</label>
+      <input type="text" id="signupUsername" name="username" placeholder="Username" ng-model="signup.username" required="required" class="form-control"/>
+    </div>
+    <div class="form-group">
+      <label for="signupPassword">Password</label>
+      <input type="password" id="signupPassword" name="password" placeholder="Password" ng-model="signup.password" required="required" class="form-control"/>
+    </div>
+    <div class="form-group">
+      <label for="signupPasswordConfirm">Confirm</label>
+      <input type="password" id="signupPasswordConfirm" name="passwordConfirmation" placeholder="Confirm" ng-model="signup.passwordConfirmation" required="required" class="form-control"/>
+    </div>
+    <div class="form-group">
+      <alert ng-repeat="alert in signupAlerts" type="{{alert.type == 'error' ? 'danger' : alert.type}}" close="closeAlert($index)" class="center-block">{{alert.msg}}</alert>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="pull-right">
+      <button type="submit" class="btn btn-default">
+        <i class="fa fa-sign-in fa-lg"></i>&nbsp;&nbsp;Sign Up
+      </button>
+    </div>
+    <div class="pull-left">
+      <button ng-click="cancel()" class="btn btn-default">
+        <i class="fa fa-undo fa-lg"></i>&nbsp;&nbsp;Cancel
+      </button>
+    </div>
+  </div>
+</form>

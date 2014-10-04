@@ -1,0 +1,40 @@
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle"  ng-init="navCollapsed=true" ng-click="navCollapsed=!navCollapsed">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <!-- TODO: extract site title -->
+      <a class="navbar-brand font-title" href="/#/home">&#x2605;&nbsp;ng-rails&nbsp;&#x2605;</a>
+    </div>
+
+    <div ng-switch="loggedIn" collapse="navCollapsed" class="collapse navbar-collapse navbar-responsive-collapse">
+      <!--<a href="/join.html" class="btn btn-danger navbar-btn">Join Now!</a>-->
+      <ul ng-switch-when="true" class="nav navbar-nav">
+        <li ui-sref-active="active"><a ui-sref="home"><i class="fa fa-home fa-2x"></i>&nbsp;&nbsp;Home</a></li>
+        <li ui-sref-active="active"><a ui-sref="users"><i class="fa fa-users fa-lg"></i>&nbsp;&nbsp;Users</a></li>
+        <li ui-sref-active="active"><a ui-sref="foo">Foo</a></li>
+        <li ui-sref-active="active"><a ui-sref="bar">Bar</a></li>
+        <li ui-sref-active="active"><a ui-sref="baz">Baz</a></li>
+      </ul>
+
+      <ul ng-switch-default="ng-switch-default" class="nav navbar-nav">
+        <li ui-sref-active="active"><a ui-sref="home"><i class="fa fa-home fa-lg"></i>&nbsp;Home</a></li>
+        <li ui-sref-active="active"><a ui-sref="features">Features</a></li>
+        <li ui-sref-active="active"><a ui-sref="explore">Explore</a></li>
+      </ul>
+
+      <div ng-if="loggedIn" class="navbar-right">
+        <div user-profile-widget class="btn-group" id="user-profile-widget"></div>
+      </div>
+
+      <div ng-if="!(loggedIn)" class="navbar-right" id="signup-login-widget">
+        <div signup-login-widget class="btn-group"></div>
+      </div>
+
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,35 @@
+<form id="login-modal" ng-submit="ok()" role="form">
+  <div class="modal-header bg-primary">
+    <h3><i class="fa fa-sign-in fa-lg"></i>&nbsp;&nbsp;Log In</h3>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="loginEmail">Email or Username</label>
+      <input type="text" id="loginEmail" name="username" placeholder="Email" ng-model="creds.email" required="required" class="form-control"/>
+    </div>
+    <div class="form-group">
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" name="password" placeholder="Password" ng-model="creds.password" required="required" class="form-control"/>
+    </div>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" id="loginRemember" name="remember_me" ng-model="creds.remember_me"/> Remember Me
+      </label>
+    </div>
+    <div class="form-group">
+      <alert ng-repeat="alert in loginAlerts" type="{{alert.type == 'error' ? 'danger' : alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="pull-right">
+      <button type="submit" class="btn btn-default">
+        <i class="fa fa-sign-in fa-lg"></i>&nbsp;&nbsp;Log In
+      </button>
+    </div>
+    <div class="pull-left">
+      <button ng-click="cancel()" class="btn btn-default">
+        <i class="fa fa-undo fa-lg"></i>&nbsp;&nbsp;Cancel
+      </button>
+    </div>
+  </div>
+</form>
