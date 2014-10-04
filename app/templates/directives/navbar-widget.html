@@ -8,13 +8,17 @@
         <span class="icon-bar"></span>
       </button>
       <!-- TODO: extract site title -->
-      <a class="navbar-brand font-title" href="/#/home">&#x2605;&nbsp;Oscillate&nbsp;&#x2605;</a>
+      <a class="navbar-brand font-title" href="/#/home">
+        <i class="fa fa-play fa-lg hidden-xs"></i>
+        &nbsp;Oscillate&nbsp;
+        <i class="fa fa-fast-forward fa-lg"></i>
+      </a>
     </div>
 
     <div ng-switch="loggedIn" collapse="navCollapsed" class="collapse navbar-collapse navbar-responsive-collapse">
       <!--<a href="/join.html" class="btn btn-danger navbar-btn">Join Now!</a>-->
       <ul ng-switch-when="true" class="nav navbar-nav">
-        <li ui-sref-active="active"><a ui-sref="home"><i class="fa fa-home fa-2x"></i>&nbsp;&nbsp;Home</a></li>
+        <li ui-sref-active="active"><a ui-sref="home"><i class="fa fa-home fa-lg"></i>&nbsp;&nbsp;Home</a></li>
         <li ui-sref-active="active"><a ui-sref="users"><i class="fa fa-users fa-lg"></i>&nbsp;&nbsp;Users</a></li>
         <li ui-sref-active="active"><a ui-sref="foo">Foo</a></li>
         <li ui-sref-active="active"><a ui-sref="bar">Bar</a></li>
