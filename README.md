@@ -20,6 +20,16 @@ A template for frontend web development with GulpJS, which includes:
 1. `gulp webserver` to run the gulp-webserver to serve static files
 1. Connect to [http://localhost:8000](http://localhost:8000)
 
+## Deploying
+
+The app is hosted at [development.oscillate.divshot.io](http://development.oscillate.divshot.io).  Divshot is a
+service to host completely static sites.
+
+Deploy with the following:
+
+1) NODE_ENV=divshot gulp
+2) divshot push
+
 ## References
 
 ### Official Docs:
