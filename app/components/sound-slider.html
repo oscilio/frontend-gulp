@@ -1,0 +1,28 @@
+<!-- TODO: fix the following issues:
+  - how to get the font-awesome button rendered inline, since you have no control over the shadow dom that's rendered :(
+  - how to mix styles from outside the component back in
+  TODO: connect slider to events: play button <=> stop button, track # seconds, render milliseconds as readable seconds
+-->
+
+<polymer-element name="sound-player" extends="paper-slider" attributes="soundId isPlaying">
+  <template>
+    <font-awesome-stack>
+      <font-awesome icon="circle" stack="2x"></font-awesome>
+      <font-awesome icon="play" stack="1x" inverse="true"></font-awesome>
+    </font-awesome-stack>
+    <shadow></shadow>
+    {{ soundId }}
+    0:00
+  </template>
+  <script>
+    Polymer('sound-player', {
+      ready: function() {
+        console.log('sound-slider ready');
+        this.super();
+      }
+    });
+  </script>
+</polymer-element>
+
+<!--<paper-slider id="sound-slider-{{sound.id}}" sound-id="" editable="false" min="0" max="1500"></paper-slider>-->
+<!--<sound-player soundId="{{sound.id}}" editable="false" min="0" max="1500"></sound-player>-->

@@ -250,7 +250,7 @@ gulp.task('watch', function () {
   gulp.watch(['app/js/**/*.js', 'app/templates/**/*.html'], ['jshint', 'js']);
   gulp.watch('app/img/**/*', ['img']);
   gulp.watch('app/pages/**/*.html', ['html']);
-  gulp.watch('app/components/build.html', ['vulcanize']);
+  gulp.watch('app/components/**/*.html', ['vulcanize']);
 });
 
 gulp.task('webserver', function () {
