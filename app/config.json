@@ -4,10 +4,15 @@
     "assets_url": "//localhost:8000/",
     "app_js": "js/app.js",
     "app_css": "css/app.css",
-    "app_components": "components/build.html"
+    "app_components": "components/build.html",
+    "build_folder": "dist"
   },
   "development": {
 
+  },
+  "divshot": {
+    "assets_url": "//development.oscillate.divshot.io/",
+    "build_folder": "divshot"
   },
   "staging": {
     "googleAnalytics": {
