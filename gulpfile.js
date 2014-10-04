@@ -113,29 +113,57 @@ gulp.task('jshint', function () {
       .pipe(notify(_.extend(notifyConf,{message: 'JSHint task complete'})));
 });
 
+var vendorJsFiles = [
+  "vendor/bower/underscore/underscore.js",
+  "vendor/bower/underscore.string/lib/underscore.string.js",
+  "vendor/bower/angular/angular.js",
+  "vendor/bower/angular-cookies/angular-cookies.js",
+  "vendor/bower/angular-route/angular-route.js",
+  "vendor/bower/angular-resource/angular-resource.js",
+  "vendor/bower/angular-bootstrap/ui-bootstrap-tpls.js",
+  "vendor/bower/angular-ui-router/release/angular-ui-router.js"
+];
+
+var appJsFiles = [
+  "app/js/app.js",
+  "app/js/**/*.js",
+  "generated/angular/template-cache.js"
+];
+
 gulp.task('js', function () {
-  return gulp.src('app/js/**/*.js')
+  return gulp.src(vendorJsFiles.concat(appJsFiles))
       .pipe(plumber({errorHandler: onError}))
-      .pipe(sourcemaps.init())
-      .pipe(template(conf))
+    //TODO: templates, & sourcemaps from multiple sources: .pipe(template(conf))
+      .pipe(sourcemaps.init())//TODO: fix sourcemaps with multiple sources
       .pipe(concat('app.js'))
       .pipe(gulp.dest('dist/js'))
       .pipe(rename({suffix: '.min'}))
+    //TODO: fix uglify
       .pipe(uglify())
       .pipe(sourcemaps.write())
-      .pipe(gulp.dest('dist/js'))
       .pipe(notify(_.extend(notifyConf,{message: 'JS task complete'})));
 });
 
+var vendorCssFiles = [
+  "vendor/bower/normalize-css/normalize.css",
+  "vendor/bower/font-awesome/css/font-awesome.css"
+];
+
+var appCssFiles = [
+  "app/css/**/*.less"
+];
+
 gulp.task('less', function () {
-  return gulp.src('./app/css/**/*.less')
+  return gulp.src(vendorCssFiles.concat(appCssFiles))
       .pipe(plumber({errorHandler: onError}))
-      .pipe(sourcemaps.init())
+      .pipe(sourcemaps.init())//TODO: fix sourcemaps with multiple sources
+      .pipe(concat('app.js'))
       .pipe(less({
         paths: [path.join(__dirname, 'less', 'includes')]
       }))
-      .pipe(sourcemaps.write())
       .pipe(gulp.dest('./dist/css'))
+      .pipe(rename({suffix: '.min'}))
+      .pipe(sourcemaps.write())
       .pipe(notify(_.extend(notifyConf,{message: 'LESS task complete'})));
 });
 

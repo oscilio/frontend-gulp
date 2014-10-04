@@ -1,46 +1,108 @@
 
+
+
 html, body {
   height: 100%;
 }
 
+/* bootstrap */
 body {
-  margin: 0;
-  font-family: sans-serif;
-  color: #333;
+  margin-botton: 60px;
+  padding-top: 60px;
 }
 
-core-scroll-header-panel {
-  position: absolute;
-  top: 0;
-  right: 0;
+#main {
+  overflow: auto;
+  padding-bottom: 80px;
+}
+
+@media (max-width: 980px) {
+  /* Enable use of floated navbar text */
+  .navbar-text.pull-right {
+    float: none;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+.mouseover-message-row {
+  height: 100px;
+}
+
+/* CSS fixes for footer
+-------------------------------------------------- */
+
+#footer {
+  position: relative;
   bottom: 0;
-  left: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  margin-top: -60px;
+  height: 60px;
+  background-color: #f5f5f5;
 }
 
-/* background for toolbar when it is at its full size */
-core-scroll-header-panel::shadow #headerBg {
-  background-image: url(../img/milky-way-desert.jpg);
+body > .container-fluid {
+  /* NOTE: not really sure why i had to cheat with the bottom padding here! */
+  /* but apparently it's not needed with container-fluid */
+  //padding: 60px 15px 60px;
 }
 
-/* background for toolbar when it is condensed */
-core-scroll-header-panel::shadow #condensedHeaderBg {
-  background-color: #262626;
+#footer > .container-fluid {
+  padding-right: 15px;
+  padding-left: 15px;
 }
 
-core-toolbar {
-  color: #d1d1d1;
-  fill: #d1d1d1;
-  background-color: transparent;
+.container-fluid .text-muted {
+  margin: 20px 0;
 }
 
-.title {
-  // TODO: get this color to change to #d1d1d1 when the core-scroll-header-panel is collapsed
-  color: #060606;
-  -webkit-transform-origin: 0;
-  transform-origin: 0;
-  font-size: 35px;
+.font-title {
+  font-family: 'Sonsie One', Helvetica, Arial, sans-serif;
 }
 
-.content {
-  padding: 10px 30px;
+/* Social buttons
+--------------------------------------------------
+*/
+a.share-icon:hover {
+  text-decoration: none;
 }
+
+/* External Fonts
+--------------------------------------------------
+  open fonts here: https://www.google.com/fonts
+*/
+
+//TODO: add file as local asset
+@import url(https://fonts.googleapis.com/css?family=Sonsie+One|Roboto:400italic,700italic,700,400);
+
+/* Bootstrap Theme Configuration
+--------------------------------------------------
+  originally, this was in a separate file: app/css/bootstrap/theme.less
+    but this was a little complicated and was a hack anyways:
+    the generated file was in app/css/bootstrap/theme.less.css
+    and was only concatenated into app.less.css because of the wildcard
+    app/css/ * * /*.css.  i like the single-file asset result, but i dont
+    want generated files in the repo.
+
+  override variables.less here (less delays evalation of vars)
+  find var values in vendor/bower/bootstrap/less/variables.less
+*/
+
+@import "../../vendor/bower/bootstrap/less/theme.less";
+@import "../../vendor/bower/bootstrap/less/bootstrap.less";
+
+/*@brand-primary: #ABCDEF;*/
+
+/*set custom font*/
+@font-family-sans-serif:  'Roboto', "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+/*changing the base font size doesn't affect all fonts evenly*/
+@font-size-base:          14px;
+
+/*
+  set font-awesome glyphs
+  - however fontawesome-webfont content codes don't match
+*/
+//@icon-font-path: "../fonts/";
+//@icon-font-name: "fontawesome-webfont";
