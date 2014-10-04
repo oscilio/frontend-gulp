@@ -20,6 +20,10 @@ var gulp = require('gulp'),
     gutil = require('gulp-util'),
     plumber = require('gulp-plumber'),
     replace = require('gulp-replace'),
+    templateCache = require('gulp-angular-templatecache'),
+    htmlify = require('gulp-angular-htmlify'),
+    ngmin = require("gulp-ngmin"),
+    merge = require('merge-stream'),
     del = require('del');
 
 _.str = require('underscore.string');
@@ -107,7 +111,8 @@ gulp.task('html', function () {
 gulp.task('jshint', function () {
   return gulp.src('app/js/**/*.js')
       .pipe(plumber({errorHandler: onWarning}))
-      .pipe(template(conf))
+    //TODO: fix templates
+      //.pipe(template(conf))
       .pipe(jshint('.jshintrc'))
       .pipe(jshint.reporter('default'))
       .pipe(notify(_.extend(notifyConf,{message: 'JSHint task complete'})));
@@ -126,22 +131,39 @@ var vendorJsFiles = [
 
 var appJsFiles = [
   "app/js/app.js",
-  "app/js/**/*.js",
-  "generated/angular/template-cache.js"
+  "app/js/**/*.js"
 ];
 
 gulp.task('js', function () {
-  return gulp.src(vendorJsFiles.concat(appJsFiles))
+  //TODO: Problems with order of completion? need callbacks?
+  //TODO: get this to work with pipes, instead of tempfiles
+  var ngTemplates = gulp.src('app/templates/**/*.html')
+      .pipe(templateCache({module: 'app'}))
+      .pipe(htmlify())
+      .pipe(gulp.dest('temp'));
+
+  return gulp.src(vendorJsFiles.concat(appJsFiles).concat(['temp/templates.js']))
       .pipe(plumber({errorHandler: onError}))
-    //TODO: templates, & sourcemaps from multiple sources: .pipe(template(conf))
-      .pipe(sourcemaps.init())//TODO: fix sourcemaps with multiple sources
+      //TODO: templates, & sourcemaps from multiple sources: .pipe(template(conf))
+      .pipe(sourcemaps.init())
+      .pipe(ngmin())
       .pipe(concat('app.js'))
-      .pipe(gulp.dest('dist/js'))
-      .pipe(rename({suffix: '.min'}))
-    //TODO: fix uglify
-      .pipe(uglify())
       .pipe(sourcemaps.write())
+      //TODO: fix uglify?
+      .pipe(gulp.dest('dist/js'))
       .pipe(notify(_.extend(notifyConf,{message: 'JS task complete'})));
+
+  //return gulp.src(vendorJsFiles.concat(appJsFiles))
+  //    .pipe(plumber({errorHandler: onError}))
+  //  //TODO: templates, & sourcemaps from multiple sources: .pipe(template(conf))
+  //    .pipe(sourcemaps.init())//TODO: fix sourcemaps with multiple sources
+  //    .pipe(concat('app.js'))
+  //    .pipe(sourcemaps.write())
+  //    .pipe(gulp.dest('dist/js'))
+  //  //TODO: fix uglify?
+  //    .pipe(uglify())
+  //    .pipe(rename({suffix: '.min'}))
+  //    .pipe(notify(_.extend(notifyConf,{message: 'JS task complete'})));
 });
 
 var vendorCssFiles = [
@@ -176,7 +198,7 @@ gulp.task('img', function () {
 });
 
 gulp.task('fonts', function () {
-  return gulp.src('vendor/bower/fontawesome/fonts/*')
+  return gulp.src(['vendor/bower/fontawesome/fonts/*', 'vendor/bower/bootstrap/fonts/*'])
       .pipe(plumber({errorHandler: onError}))
       .pipe(gulp.dest('dist/fonts'))
       .pipe(notify(_.extend(notifyConf,{message: 'Fonts task complete'})));
@@ -199,7 +221,7 @@ gulp.task('vulcanize', function () {
 });
 
 gulp.task('clean', function (cb) {
-  del(['dist/css', 'dist/js', 'dist/img', 'dist/components', 'dist/fonts', 'dist/index.html'], cb)
+  del(['dist/css', 'dist/js', 'dist/img', 'dist/components', 'dist/fonts', 'dist/index.html', 'dist/templates.js'], cb)
 });
 
 gulp.task('default', ['clean'], function () {
@@ -210,7 +232,7 @@ gulp.task('watch', function () {
   fatalLevel = fatalLevel || 'off';
   gulp.watch('app/config.json', ['js', 'html']);
   gulp.watch('app/css/**/*.less', ['less']);
-  gulp.watch('app/js/**/*.js', ['jshint', 'js']);
+  gulp.watch(['app/js/**/*.js', 'app/templates/**.*.html'], ['jshint', 'js']);
   gulp.watch('app/img/**/*', ['img']);
   gulp.watch('app/pages/**/*.html', ['html']);
   gulp.watch('app/components/build.html', ['vulcanize']);
@@ -220,12 +242,7 @@ gulp.task('webserver', function () {
   gulp.src('dist')
       .pipe(webserver({
         livereload: true,
-        directoryListing: {
-          enable: true,
-          path: 'dist'
-        },
         port: 8000,
-        //https: true,
         open: true
       }));
 });
