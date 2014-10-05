@@ -17,8 +17,11 @@
     <paper-slider id="sound-slider-{{sound.id}}" sound-id="" editable="false" min="0" max="1500"></paper-slider> -->
     <div class="btn-group open">
       <!-- TODO: fa-stack play icon? -->
-      <!-- <a class="btn btn-primary" href="#"><i class="fa fa-play fa-fw fa-lg"></i> Play</a> -->
-      <a class="btn btn-info" href="#"><i class="fa fa-retweet fa-fw fa-lg"></i> Re-Pulse</a>
+      <a class="btn btn-primary" href="#"><i class="fa fa-play fa-fw fa-lg"></i>&nbsp;Play</a>
+      <a class="btn btn-info" href="#"><i class="fa fa-retweet fa-fw fa-lg"></i>&nbsp;Re-Pulse</a>
+      <a ng-if="sound.configFiles" class="btn btn-default" href="#" popover="Download the files to make this sound." popover-placement="left" popover-trigger="mouseenter">
+        <i class="fa fa-download fa-fw fa-lg"></i>
+      </a>
     </div>
   </div>
 </div>

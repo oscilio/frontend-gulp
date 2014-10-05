@@ -21,7 +21,8 @@ app.controller("ExploreCtrl", function($scope, $location, AuthenticationService)
       },
       title: 'New 808 Drumkit Config',
       post: 'Sick new #drumkit using the classic $Roland808, cant fake that sound #electrofunk',
-      soundbyteUrl: '/sounds/crystalmethod.mp3'
+      soundbyteUrl: '/sounds/crystalmethod.mp3',
+      configFiles: true
     },
     {
       id: '2',
@@ -30,7 +31,8 @@ app.controller("ExploreCtrl", function($scope, $location, AuthenticationService)
       },
       title: 'Nu Glitch Sound',
       post: 'Just posted this $Massive #nuGlitch byte, check it out @kraddy',
-      soundbyteUrl: '/sounds/artsyremix.mp3'
+      soundbyteUrl: '/sounds/artsyremix.mp3',
+      configFiles: true
     },
     {
       id: '3',
@@ -39,7 +41,8 @@ app.controller("ExploreCtrl", function($scope, $location, AuthenticationService)
       },
       title: '2014 Tour Byte',
       post: 'Check out our #NewSound from the @GlitchMob show in #NYC!',
-      soundbyteUrl: '/sounds/androidporn.mp3'
+      soundbyteUrl: '/sounds/androidporn.mp3',
+      configFiles: false
     },
     {
       id: '4',
@@ -49,7 +52,8 @@ app.controller("ExploreCtrl", function($scope, $location, AuthenticationService)
       title: 'New Bass Kick',
       //http://www.powerdrumkit.com/download.htm
       post: 'Sick new #Bass #Kick using the $MTPowerDrumKit2 #Free #VST',
-      soundbyteUrl: '/sounds/hacksaw.mp3'
+      soundbyteUrl: '/sounds/hacksaw.mp3',
+      configFiles: true
     },
     {
       id: '5',
@@ -58,7 +62,8 @@ app.controller("ExploreCtrl", function($scope, $location, AuthenticationService)
       },
       title: 'New Gravediggin Mix Preview Byte',
       post: "Y'all won't believe the record I just dug up from the #graveyard #gravediggin $vinyl",
-      soundbyteUrl: '/sounds/djshadow.mp3'
+      soundbyteUrl: '/sounds/djshadow.mp3',
+      configFiles: false
     },
     {
       id: '6',
@@ -67,7 +72,8 @@ app.controller("ExploreCtrl", function($scope, $location, AuthenticationService)
       },
       title: "Guess who's back y'all?",
       post: "Check out a #NewByte of my upcoming album, #PlatinumPyramids.  And yes -- still 100% true to da $808!",
-      soundbyteUrl: '/sounds/egyptegypt.mp3'
+      soundbyteUrl: '/sounds/egyptegypt.mp3',
+      configFiles: false
     },
     {
       id: '7',
@@ -76,7 +82,8 @@ app.controller("ExploreCtrl", function($scope, $location, AuthenticationService)
       },
       title: "Words of Wisdom",
       post: "Give this #byte a listen, part of a new track I got a new track coming on Friday!",
-      soundbyteUrl: '/sounds/imtechnique.mp3'
+      soundbyteUrl: '/sounds/imtechnique.mp3',
+      configFiles: true
     }
   ];
 
