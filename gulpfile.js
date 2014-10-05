@@ -205,6 +205,13 @@ gulp.task('img', function () {
       .pipe(notify(_.extend(notifyConf,{message: 'Img task complete'})));
 });
 
+gulp.task('sounds', function () {
+  return gulp.src('app/sounds/**/*')
+      .pipe(plumber({errorHandler: onError}))
+      .pipe(gulp.dest(buildFolder + '/sounds'))
+      .pipe(notify(_.extend(notifyConf,{message: 'Sounds task complete'})));
+});
+
 gulp.task('fonts', function () {
   return gulp.src(['vendor/bower/fontawesome/fonts/*', 'vendor/bower/bootstrap/fonts/*'])
       .pipe(plumber({errorHandler: onError}))
@@ -232,6 +239,7 @@ gulp.task('clean', function (cb) {
   del([buildFolder + '/css',
     buildFolder + '/js',
     buildFolder + '/img',
+    buildFolder + '/sounds',
     buildFolder + '/components',
     buildFolder + '/fonts',
     buildFolder + '/index.html',
@@ -240,7 +248,7 @@ gulp.task('clean', function (cb) {
 });
 
 gulp.task('default', ['clean'], function () {
-  gulp.start('html', 'less', 'jshint', 'js', 'img', 'vulcanize', 'fonts');
+  gulp.start('html', 'less', 'jshint', 'js', 'img', 'vulcanize', 'fonts', 'sounds');
 });
 
 gulp.task('watch', function () {
@@ -248,6 +256,7 @@ gulp.task('watch', function () {
   gulp.watch('app/config.json', ['js', 'html']);
   gulp.watch('app/css/**/*.less', ['less']);
   gulp.watch(['app/js/**/*.js', 'app/templates/**/*.html'], ['jshint', 'js']);
+  gulp.watch('app/sounds/**/*', ['sounds']);
   gulp.watch('app/img/**/*', ['img']);
   gulp.watch('app/pages/**/*.html', ['html']);
   gulp.watch('app/components/**/*.html', ['vulcanize']);

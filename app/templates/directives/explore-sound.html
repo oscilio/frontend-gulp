@@ -7,11 +7,17 @@
   <div class="panel-body">
     <h4>{{ sound.post }}</h4>
   </div>
+
   <div class="panel-footer">
-    <paper-slider id="sound-slider-{{sound.id}}" sound-id="" editable="false" min="0" max="1500"></paper-slider>
+    <audio controls>
+      <source src="{{sound.soundbyteUrl}}" type="audio/mpeg">
+      Your browser does not support audio tags.
+    </audio>
+    <!-- TODO: implement custom audio controls
+    <paper-slider id="sound-slider-{{sound.id}}" sound-id="" editable="false" min="0" max="1500"></paper-slider> -->
     <div class="btn-group open">
       <!-- TODO: fa-stack play icon? -->
-      <a class="btn btn-primary" href="#"><i class="fa fa-play fa-fw fa-lg"></i> Play</a>
+      <!-- <a class="btn btn-primary" href="#"><i class="fa fa-play fa-fw fa-lg"></i> Play</a> -->
       <a class="btn btn-info" href="#"><i class="fa fa-retweet fa-fw fa-lg"></i> Re-Pulse</a>
     </div>
   </div>
