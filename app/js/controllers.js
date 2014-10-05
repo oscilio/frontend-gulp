@@ -21,7 +21,7 @@ app.controller("ExploreCtrl", function($scope, $location, AuthenticationService)
       },
       title: 'New 808 Drumkit Config',
       post: 'Sick new #drumkit using the classic $Roland808, cant fake that sound #electrofunk',
-      soundbyteUrl: ''
+      soundbyteUrl: '/sounds/crystalmethod.mp3'
     },
     {
       id: '2',
@@ -30,7 +30,7 @@ app.controller("ExploreCtrl", function($scope, $location, AuthenticationService)
       },
       title: 'Nu Glitch Sound',
       post: 'Just posted this $Massive #nuGlitch byte, check it out @kraddy',
-      soundbyteUrl: ''
+      soundbyteUrl: '/sounds/artsyremix.mp3'
     },
     {
       id: '3',
@@ -39,7 +39,7 @@ app.controller("ExploreCtrl", function($scope, $location, AuthenticationService)
       },
       title: '2014 Tour Byte',
       post: 'Check out our #NewSound from the @GlitchMob show in #NYC!',
-      soundbyteUrl: ''
+      soundbyteUrl: '/sounds/androidporn.mp3'
     },
     {
       id: '4',
@@ -49,7 +49,34 @@ app.controller("ExploreCtrl", function($scope, $location, AuthenticationService)
       title: 'New Bass Kick',
       //http://www.powerdrumkit.com/download.htm
       post: 'Sick new #Bass #Kick using the $MTPowerDrumKit2 #Free #VST',
-      soundbyteUrl: ''
+      soundbyteUrl: '/sounds/hacksaw.mp3'
+    },
+    {
+      id: '5',
+      user: {
+        username: 'djshadow'
+      },
+      title: 'New Gravediggin Mix Preview Byte',
+      post: "Y'all won't believe the record I just dug up from the #graveyard #gravediggin $vinyl",
+      soundbyteUrl: '/sounds/djshadow.mp3'
+    },
+    {
+      id: '6',
+      user: {
+        username: 'egyptianlover'
+      },
+      title: "Guess who's back y'all?",
+      post: "Check out a #NewByte of my upcoming album, #PlatinumPyramids.  And yes -- still 100% true to da $808!",
+      soundbyteUrl: '/sounds/egyptegypt.mp3'
+    },
+    {
+      id: '7',
+      user: {
+        username: 'urbansage'
+      },
+      title: "Words of Wisdom",
+      post: "Give this #byte a listen, part of a new track I got a new track coming on Friday!",
+      soundbyteUrl: '/sounds/imtechnique.mp3'
     }
   ];
 
