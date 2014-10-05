@@ -4,7 +4,9 @@ var app = angular.module("app",
       'ngResource',
       'firebase',
       'ui.bootstrap',
-      'ui.router'])
+      'ui.router',
+      'angulartics',
+      'angulartics.google.analytics'])
 
     .config(function($stateProvider,
                      $locationProvider,

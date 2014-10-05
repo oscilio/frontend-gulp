@@ -130,7 +130,9 @@ var vendorJsFiles = [
   "vendor/bower/angular-bootstrap/ui-bootstrap-tpls.js",
   "vendor/bower/angular-ui-router/release/angular-ui-router.js",
   "vendor/bower/firebase/firebase.js",
-  "vendor/bower/angularfire/dist/angularfire.js"
+  "vendor/bower/angularfire/dist/angularfire.js",
+  "vendor/bower/angulartics/src/angulartics.js",
+  "vendor/bower/angulartics/src/angulartics-ga.js"
     //TODO: firebase-simple-login
 ];
 
