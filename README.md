@@ -32,6 +32,15 @@ Deploy with the following:
 
 ## References
 
+### Web Audio API
+
+- Audio Tag http://www.w3schools.com/tags/tag_audio.asp
+- http://joshondesign.com/p/books/canvasdeepdive/chapter12.html
+- https://developer.mozilla.org/en-US/docs/Web/HTML/Supported_media_formats#Browser_compatibility
+- http://www.html5rocks.com/en/tutorials/webaudio/intro/
+- http://middleearmedia.com/web-audio-api-audio-buffer/
+- https://developer.apple.com/library/safari/documentation/audiovideo/conceptual/using_html5_audio_video/PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html
+
 ### Official Docs:
 
 - [getting started](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md)
