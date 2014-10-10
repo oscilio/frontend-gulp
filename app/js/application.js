@@ -128,6 +128,11 @@ var app = angular.module("app",
       //   $httpProvider.responseInterceptors.push(interceptor);
     })
 
+    .constant('CONF', {
+      apiUrl: '<%= api_url %>',
+      firebaseApp: '<%= firebase_app %>'
+    })
+
     .constant('AUTH_EVENTS', {
       loginSuccess: 'auth-login-success',
       loginFailed: 'auth-login-failed',

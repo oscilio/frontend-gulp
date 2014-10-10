@@ -1,4 +1,5 @@
 // ==[ Dependencies ]======================================
+//TODO: rewrite, using gulp-load-plugins
 var gulp = require('gulp'),
     _ = require('underscore'),
     less = require('gulp-less'),
@@ -22,8 +23,9 @@ var gulp = require('gulp'),
     replace = require('gulp-replace'),
     templateCache = require('gulp-angular-templatecache'),
     htmlify = require('gulp-angular-htmlify'),
-    ngmin = require("gulp-ngmin"),
-    merge = require('merge-stream'),
+    streamqueue = require('streamqueue'),
+    changed = require('gulp-changed'),
+    ngAnnotate = require('gulp-ng-annotate'),
     del = require('del');
 
 _.str = require('underscore.string');
@@ -68,19 +70,11 @@ function onWarning(error) {
 
 // ========================================================
 
-//TODO: fix path problems in components/build.html (wtf google-code-prettify, marked.js, context-free-parser.js)
-//TODO: stream jshint task into js task
 //TODO: common piped task for multi-env configuration?
-//TODO: generate for multiple environments simultaneously? (multiple output folders)
-//TODO: FIX LiveReload
-//TODO: setup basic angular app with templates
-//TODO: gulp rss?
 //TODO: sitemap?
 //TODO: asset fingerprinting?
 //TODO: jshintrc - look at https://gist.github.com/connor/1597131
 //TODO: add 404.html and other templates
-//TODO: ensure Polymer.js and Platform.js are included in components/build.html
-//TODO: address Angular/Polymer SEO
 
 //gulp-notify defaults for completed tasks
 //  official config examples: https://github.com/mikaelbr/gulp-notify/blob/master/examples/gulpfile.js
@@ -96,7 +90,7 @@ var node_env = process.env.NODE_ENV || 'development',
         _.pick(pkg, 'title', 'description'),
         config['common'],
         config[node_env],
-        { ustr: _.str } // makes underscore.str available in templates
+        {ustr: _.str} // makes underscore.str available in templates
     );
 
 var buildFolder = conf["build_folder"] || "dist";
@@ -106,18 +100,7 @@ gulp.task('html', function () {
       .pipe(plumber({errorHandler: onError}))
       .pipe(template(conf))
       .pipe(gulp.dest(buildFolder))
-      .pipe(notify(_.extend(notifyConf,{message: 'HTML task complete'})));
-});
-
-//TODO: update jshint & js tasks so that one streams into the other, for efficiency
-gulp.task('jshint', function () {
-  return gulp.src('app/js/**/*.js')
-      .pipe(plumber({errorHandler: onWarning}))
-    //TODO: fix templates
-      //.pipe(template(conf))
-      .pipe(jshint('.jshintrc'))
-      .pipe(jshint.reporter('default'))
-      .pipe(notify(_.extend(notifyConf,{message: 'JSHint task complete'})));
+      .pipe(notify(_.extend(notifyConf, {message: 'HTML task complete'})));
 });
 
 var vendorJsFiles = [
@@ -133,47 +116,56 @@ var vendorJsFiles = [
   "vendor/bower/angularfire/dist/angularfire.js",
   "vendor/bower/angulartics/src/angulartics.js",
   "vendor/bower/angulartics/src/angulartics-ga.js"
-    //TODO: firebase-simple-login
+  //TODO: firebase-simple-login
 ];
 
 var appJsFiles = [
-  "app/js/app.js",
+  "app/js/application.js",
   "app/js/**/*.js"
 ];
 
-gulp.task('ngtemplates', function() {
-  return ngTemplates = gulp.src('app/templates/**/*.html')
-      .pipe(templateCache({module: 'app'}))
-      .pipe(htmlify())
-      .pipe(gulp.dest('temp'));
+//TODO: fix JS Hint, so that it's relevant
+//  i only want it to lint my files, but it needs the vendor files for reference...
+gulp.task('jshint', function () {
+  return streamqueue({objectMode: true},
+      //first, process vendor js,
+      gulp.src(vendorJsFiles),
+
+      //then, process app js
+      gulp.src(appJsFiles)
+          .pipe(ngAnnotate())
+          .pipe(template(conf))
+          .pipe(concat('app.js')))
+
+      .pipe(plumber({errorHandler: onWarning}))
+      .pipe(concat('app.js'))
+      .pipe(jshint('.jshintrc'))
+      .pipe(jshint.reporter('default'))
+      .pipe(notify(_.extend(notifyConf, {message: 'JSHint task complete'})));
 });
 
-gulp.task('js', ['ngtemplates'], function () {
-  //TODO: Problems with order of completion? need callbacks?
-  //TODO: get this to work with pipes, instead of tempfiles
+gulp.task('js', function () {
+  return streamqueue({objectMode: true},
+      //first, process vendor js,
+      gulp.src(vendorJsFiles),
 
-  return gulp.src(vendorJsFiles.concat(appJsFiles).concat(['temp/templates.js']))
-      .pipe(plumber({errorHandler: onError}))
-      //TODO: templates, & sourcemaps from multiple sources: .pipe(template(conf))
+      //then, process app js
+      gulp.src(appJsFiles)
+          .pipe(ngAnnotate())
+          .pipe(template(conf)),
+
+      //finally, process templates
+      gulp.src('app/templates/**/*.html')
+          .pipe(plumber({errorHandler: onError}))
+          .pipe(templateCache({module: 'app'}))
+          .pipe(htmlify()))
+
       .pipe(sourcemaps.init())
-      .pipe(ngmin())
       .pipe(concat('app.js'))
+      .pipe(uglify())
       .pipe(sourcemaps.write())
-      //TODO: fix uglify?
       .pipe(gulp.dest(buildFolder + '/js'))
-      .pipe(notify(_.extend(notifyConf,{message: 'JS task complete'})));
-
-  //return gulp.src(vendorJsFiles.concat(appJsFiles))
-  //    .pipe(plumber({errorHandler: onError}))
-  //  //TODO: templates, & sourcemaps from multiple sources: .pipe(template(conf))
-  //    .pipe(sourcemaps.init())//TODO: fix sourcemaps with multiple sources
-  //    .pipe(concat('app.js'))
-  //    .pipe(sourcemaps.write())
-  //    .pipe(gulp.dest(buildFolder + '/js'))
-  //  //TODO: fix uglify?
-  //    .pipe(uglify())
-  //    .pipe(rename({suffix: '.min'}))
-  //    .pipe(notify(_.extend(notifyConf,{message: 'JS task complete'})));
+      .pipe(notify(_.extend(notifyConf, {message: 'JS task complete'})));
 });
 
 var vendorCssFiles = [
@@ -196,29 +188,35 @@ gulp.task('less', function () {
       .pipe(gulp.dest(buildFolder + '/css'))
       .pipe(rename({suffix: '.min'}))
       .pipe(sourcemaps.write())
-      .pipe(notify(_.extend(notifyConf,{message: 'LESS task complete'})));
+      .pipe(notify(_.extend(notifyConf, {message: 'LESS task complete'})));
 });
 
 gulp.task('img', function () {
+  var DEST = buildFolder + '/sounds';
   return gulp.src('app/img/**/*')
       .pipe(plumber({errorHandler: onError}))
+      .pipe(changed(DEST))
       .pipe(imagemin({optimizationLevel: 3, progressive: true, interlaced: true}))
-      .pipe(gulp.dest(buildFolder + '/img'))
-      .pipe(notify(_.extend(notifyConf,{message: 'Img task complete'})));
+      .pipe(gulp.dest(DEST))
+      .pipe(notify(_.extend(notifyConf, {message: 'Img task complete'})));
 });
 
 gulp.task('sounds', function () {
+  var DEST = buildFolder + '/sounds';
   return gulp.src('app/sounds/**/*')
       .pipe(plumber({errorHandler: onError}))
-      .pipe(gulp.dest(buildFolder + '/sounds'))
-      .pipe(notify(_.extend(notifyConf,{message: 'Sounds task complete'})));
+      .pipe(changed(DEST))
+      .pipe(gulp.dest(DEST))
+      .pipe(notify(_.extend(notifyConf, {message: 'Sounds task complete'})));
 });
 
 gulp.task('fonts', function () {
+  var DEST = buildFolder + '/fonts';
   return gulp.src(['vendor/bower/fontawesome/fonts/*', 'vendor/bower/bootstrap/fonts/*'])
       .pipe(plumber({errorHandler: onError}))
-      .pipe(gulp.dest(buildFolder + '/fonts'))
-      .pipe(notify(_.extend(notifyConf,{message: 'Fonts task complete'})));
+      .pipe(changed(DEST))
+      .pipe(gulp.dest(DEST))
+      .pipe(notify(_.extend(notifyConf, {message: 'Fonts task complete'})));
 });
 
 gulp.task('vulcanize', function () {
@@ -231,33 +229,33 @@ gulp.task('vulcanize', function () {
         csp: true,
         strip: (node_env === 'production' || node_env === 'staging')
       }))
-      // TODO: better way to resolve this than to use gulp-replace? open github issue?
+    // TODO: better way to resolve this than to use gulp-replace? open github issue?
       .pipe(replace('../../vendor/bower/fontawesome/fonts', '../fonts'))
       .pipe(gulp.dest(buildFolder + '/components'))
-      .pipe(notify(_.extend(notifyConf,{message: 'Vulcanize task complete'})));
+      .pipe(notify(_.extend(notifyConf, {message: 'Vulcanize task complete'})));
 });
 
 gulp.task('clean', function (cb) {
   del([buildFolder + '/css',
-    buildFolder + '/js',
-    buildFolder + '/img',
-    buildFolder + '/sounds',
-    buildFolder + '/components',
-    buildFolder + '/fonts',
-    buildFolder + '/index.html',
-    buildFolder + '/templates.js'],
+        buildFolder + '/js',
+        buildFolder + '/img',
+        buildFolder + '/sounds',
+        buildFolder + '/components',
+        buildFolder + '/fonts',
+        buildFolder + '/index.html',
+        buildFolder + '/templates.js'],
       cb)
 });
 
 gulp.task('default', ['clean'], function () {
-  gulp.start('html', 'less', 'jshint', 'js', 'img', 'vulcanize', 'fonts', 'sounds');
+  gulp.start('html', 'less', 'js', 'img', 'vulcanize', 'fonts', 'sounds');
 });
 
 gulp.task('watch', function () {
   fatalLevel = fatalLevel || 'off';
   gulp.watch('app/config.json', ['js', 'html']);
   gulp.watch('app/css/**/*.less', ['less']);
-  gulp.watch(['app/js/**/*.js', 'app/templates/**/*.html'], ['jshint', 'js']);
+  gulp.watch(['app/js/**/*.js', 'app/templates/**/*.html'], ['js']);
   gulp.watch('app/sounds/**/*', ['sounds']);
   gulp.watch('app/img/**/*', ['img']);
   gulp.watch('app/pages/**/*.html', ['html']);
