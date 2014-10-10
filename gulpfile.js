@@ -114,7 +114,8 @@ var vendorJsFiles = [
   "vendor/bower/angular-bootstrap/ui-bootstrap-tpls.js",
   "vendor/bower/angular-ui-router/release/angular-ui-router.js",
   "vendor/bower/angulartics/src/angulartics.js",
-  "vendor/bower/angulartics/src/angulartics-ga.js"
+  "vendor/bower/angulartics/src/angulartics-ga.js",
+  "vendor/bower/restangular/dist/restangular.js"
 ];
 
 var appJsFiles = [
@@ -152,6 +153,7 @@ gulp.task('js', function () {
 
       //then, process app js
       gulp.src(appJsFiles)
+          .pipe(plumber({errorHandler: onError}))
           .pipe(ngAnnotate())
           .pipe(template(conf))
           .pipe(wrap('(function(){ \'use strict\'; <%= contents %> })();')),

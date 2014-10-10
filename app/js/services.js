@@ -1,28 +1,31 @@
 function EnvService (CFG) {
   var EnvService = {};
 
-  EnvService.apiUrl = '//' + CFG.apiUrl + '/';
+  EnvService.apiUrl = '//' + CFG.apiUrl;
   return EnvService;
 }
 
 angular.module('app')
-    .service('EnvService', EnvService);
+    .service('EnvService', EnvService)
 
-angular.module('app').factory('RegistrationService', function ($http, CFG) {
+function RegistrationService ($http, EnvService) {
   return {
     signup: function (params, success, error) {
-      return $http.post(CFG.apiUrl + '/api/v1/users.json', {user: params}, {method: 'post'})
+      return $http.post(EnvService.apiUrl + '/api/v1/users.json', {user: params}, {method: 'post'})
           .success(success)
           .error(error);
     }
   };
-})
+}
 
-    .factory('AuthenticationService', function ($http, Session, CFG) {
+angular.module('app')
+    .factory('RegistrationService', RegistrationService)
+
+    .factory('AuthenticationService', function ($http, Session, EnvService) {
       //TODO: replace currentUser
       return {
         login: function (credentials, success, error) {
-          return $http.post(CFG.apiUrl + '/api/v1/login.json', {
+          return $http.post(EnvService.apiUrl + '/api/v1/login.json', {
             user: credentials
           }).success(function (res) {
             if (res.user) {
@@ -36,7 +39,7 @@ angular.module('app').factory('RegistrationService', function ($http, CFG) {
           });
         },
         logout: function (success, error) {
-          return $http.post(CFG.apiUrl + '/api/v1/logout.json', {}).success(function (res) {
+          return $http.post(EnvService.apiUrl + '/api/v1/logout.json', {}).success(function (res) {
             Session.destroy();
             success(res);
           }).error(function (res) {
@@ -101,6 +104,6 @@ angular.module('app').factory('RegistrationService', function ($http, CFG) {
       return this;
     })
 
-    .factory('Users', function ($resource, CFG) {
-      return $resource(CFG.apiUrl + '/api/v1/users', {format: 'json'});
+    .factory('Users', function ($resource, EnvService) {
+      return $resource(EnvService.apiUrl + '/api/v1/users', {format: 'json'});
     });
