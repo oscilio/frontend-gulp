@@ -1,18 +1,18 @@
-angular.module('app').factory('RegistrationService', function ($http) {
+angular.module('app').factory('RegistrationService', function ($http, CFG) {
   return {
     signup: function (params, success, error) {
-      return $http.post(apiUrl + '/api/v1/users.json', {user: params}, {method: 'post'})
+      return $http.post(CFG.apiUrl + '/api/v1/users.json', {user: params}, {method: 'post'})
           .success(success)
           .error(error);
     }
   };
 })
 
-    .factory('AuthenticationService', function ($http, Session) {
+    .factory('AuthenticationService', function ($http, Session, CFG) {
       //TODO: replace currentUser
       return {
         login: function (credentials, success, error) {
-          return $http.post(apiUrl + '/api/v1/login.json', {
+          return $http.post(CFG.apiUrl + '/api/v1/login.json', {
             user: credentials
           }).success(function (res) {
             if (res.user) {
@@ -26,7 +26,7 @@ angular.module('app').factory('RegistrationService', function ($http) {
           });
         },
         logout: function (success, error) {
-          return $http.post(apiUrl + '/api/v1/logout.json', {}).success(function (res) {
+          return $http.post(CFG.apiUrl + '/api/v1/logout.json', {}).success(function (res) {
             Session.destroy();
             success(res);
           }).error(function (res) {
@@ -91,6 +91,6 @@ angular.module('app').factory('RegistrationService', function ($http) {
       return this;
     })
 
-    .factory('Users', function ($resource) {
-      return $resource(apiUrl + '/api/v1/users', {format: 'json'});
+    .factory('Users', function ($resource, CFG) {
+      return $resource(CFG.apiUrl + '/api/v1/users', {format: 'json'});
     });

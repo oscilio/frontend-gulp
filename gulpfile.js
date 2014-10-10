@@ -157,8 +157,7 @@ gulp.task('js', function () {
       gulp.src(appJsFiles)
           .pipe(ngAnnotate())
           .pipe(template(conf))
-          .pipe(wrap('(function(){ \'use strict\'; <%= contents %> })();'))
-      ,
+          .pipe(wrap('(function(){ \'use strict\'; <%= contents %> })();')),
 
       //finally, process templates
       gulp.src('app/templates/**/*.html')
@@ -166,8 +165,7 @@ gulp.task('js', function () {
           .pipe(templateCache({module: 'app'}))
           .pipe(htmlify())
           .pipe(concat('templates.js'))
-          .pipe(wrap('(function(){ <%= contents %> })();'))
-      ,
+          .pipe(wrap('(function(){ <%= contents %> })();')),
 
       //oh, and IIFE footer.  yeesh, this feels dirty.
       //  i'm trying to this an meet the following criteria

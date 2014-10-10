@@ -128,7 +128,7 @@ angular.module('app',
       //   $httpProvider.responseInterceptors.push(interceptor);
     })
 
-    .constant('CONF', {
+    .constant('CFG', {
       apiUrl: '<%= api_url %>',
       firebaseApp: '<%= firebase_app %>'
     })
