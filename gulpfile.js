@@ -157,7 +157,7 @@ gulp.task('js', function () {
       gulp.src(appJsFiles)
           .pipe(ngAnnotate())
           .pipe(template(conf))
-          .pipe(wrap('(function(){ <%= contents %> })();'))
+          .pipe(wrap('(function(){ \'use strict\'; <%= contents %> })();'))
       ,
 
       //finally, process templates

@@ -1,4 +1,4 @@
-var app = angular.module("app",
+angular.module('app',
     ['ngRoute',
       'ngCookies',
       'ngResource',
@@ -8,11 +8,11 @@ var app = angular.module("app",
       'angulartics',
       'angulartics.google.analytics'])
 
-    .config(function($stateProvider,
-                     $locationProvider,
-                     $urlRouterProvider) {
+    .config(function ($stateProvider,
+                      $locationProvider,
+                      $urlRouterProvider) {
 
-      'use strict';
+
 
       // states: unauthenticated
       // home - / - prompt to signup
@@ -98,7 +98,7 @@ var app = angular.module("app",
 
     })
 
-    .config(function($locationProvider, $httpProvider){
+    .config(function ($locationProvider, $httpProvider) {
       $httpProvider.responseInterceptors.push('httpInterceptor');
 
       // if (angular.element('meta[name=csrf-token]'))
@@ -148,17 +148,17 @@ var app = angular.module("app",
       guest: 'guest'
     })
 
-    .run(function($rootScope, $location, AuthenticationService, Session, $cookies) {
+    .run(function ($rootScope, $location, AuthenticationService, Session, $cookies) {
 
       //==================
       // debugging
       //==================
 
-      $rootScope.log = function(thing) {
+      $rootScope.log = function (thing) {
         console.log(thing);
       };
 
-      $rootScope.alert = function(thing) {
+      $rootScope.alert = function (thing) {
         alert(thing);
       };
 
