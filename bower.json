@@ -24,6 +24,7 @@
     "angular-bootstrap": "~0.11.x",
     "firebase": "~1.1.0",
     "angulartics": "~0.17.0",
-    "angularfire": "~0.8.2"
+    "angularfire": "~0.8.2",
+    "restangular": "~1.4.0"
   }
 }

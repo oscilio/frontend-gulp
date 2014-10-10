@@ -209,10 +209,6 @@ angular.module('app')
       };
     })
 
-    .controller('FooCtrl', function ($scope, $location, AuthenticationService) {
-
-    })
-
     .controller('UsersCtrl', function ($scope, Users) {
       $scope.users = Users.query();
     });

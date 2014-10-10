@@ -1,3 +1,14 @@
+function EnvService (CFG) {
+  var EnvService = {};
+
+  EnvService.apiUrl = '//' + CFG.apiUrl + '/'
+  EnvService.fbaseUrl = 'https://' + CFG.firebaseApp + '.firebaseio.com';
+
+  return EnvService;
+}
+
+angular.module('app').service('EnvService', EnvService);
+
 angular.module('app').factory('RegistrationService', function ($http, CFG) {
   return {
     signup: function (params, success, error) {

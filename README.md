@@ -35,6 +35,7 @@ Deploy with the following:
 
 ### Firebase
 
+- [Firebase Simple Login is deprecated as of 10/3/14](https://www.firebase.com/docs/web/guide/user-auth.html)
 - [Official AngularFire/SimpleLogin Example](https://www.firebase.com/docs/web/libraries/angular/quickstart.html)
 - http://www.christopheresplin.com/single-page-app-architecture-connecting-to-firebase
 

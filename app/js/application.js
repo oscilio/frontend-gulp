@@ -3,6 +3,8 @@ angular.module('app',
       'ngCookies',
       'ngResource',
       'firebase',
+      'firebaseSimpleLogin',
+      'restangular',
       'ui.bootstrap',
       'ui.router',
       'angulartics',
@@ -11,8 +13,6 @@ angular.module('app',
     .config(function ($stateProvider,
                       $locationProvider,
                       $urlRouterProvider) {
-
-
 
       // states: unauthenticated
       // home - / - prompt to signup
@@ -49,16 +49,7 @@ angular.module('app',
             controller: 'HomeCtrl'
           })
 
-        //TODO: redirect unauthenticated routes to a login page,
-        // - but when trying to redirect to unauthenticated /users to /login,
-        //   - the users template still renders
-        // - routing to /home for now
-
-//            .state('login', {
-//                url: 'login',
-//                templateUrl: 'login.html',
-//                controller: 'LoginCtrl'
-//            })
+        //TODO: redirect unauthenticated routes to the home state, then open the login modal
 
         // authenticated routes
         // TODO: /pulses - your newsfeeds
@@ -69,31 +60,12 @@ angular.module('app',
         // TODO: /top/instruments
         // TODO: /top/artist
         // TODO: /top/genres
-        // TODO: /top/instruments
         // TODO: /users/:id
 
           .state('users', {
             url: "/users",
             templateUrl: "users/index.html",
             controller: "UsersIndexCtrl"
-          })
-
-          .state('foo', {
-            url: "/foo",
-            templateUrl: "foo.html",
-            controller: "FooCtrl"
-          })
-
-          .state('bar', {
-            url: '/bar',
-            templateUrl: 'foo/bar.html',
-            controller: 'FooCtrl'
-          })
-
-          .state('baz', {
-            url: '/baz',
-            templateUrl: 'foo/baz.html',
-            controller: 'FooCtrl'
           });
 
     })
