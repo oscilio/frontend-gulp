@@ -2,8 +2,6 @@ angular.module('app',
     ['ngRoute',
       'ngCookies',
       'ngResource',
-      'firebase',
-      'firebaseSimpleLogin',
       'restangular',
       'ui.bootstrap',
       'ui.router',
@@ -101,8 +99,7 @@ angular.module('app',
     })
 
     .constant('CFG', {
-      apiUrl: '<%= api_url %>',
-      firebaseApp: '<%= firebase_app %>'
+      apiUrl: '<%= api_url %>'
     })
 
     .constant('AUTH_EVENTS', {
