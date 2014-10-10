@@ -1,6 +1,7 @@
 // ==[ Dependencies ]======================================
 //TODO: rewrite, using gulp-load-plugins
 var gulp = require('gulp'),
+    pkg = require('./package.json'),
     _ = require('underscore'),
     less = require('gulp-less'),
     path = require('path'),
@@ -16,7 +17,6 @@ var gulp = require('gulp'),
     vulcanize = require('gulp-vulcanize'),
     webserver = require('gulp-webserver'),
     config = require('./app/config.json'),
-    pkg = require('./package.json'),
     yargs = require('yargs'),
     gutil = require('gulp-util'),
     plumber = require('gulp-plumber'),
@@ -26,6 +26,7 @@ var gulp = require('gulp'),
     streamqueue = require('streamqueue'),
     changed = require('gulp-changed'),
     ngAnnotate = require('gulp-ng-annotate'),
+    wrap = require('gulp-wrap'),
     del = require('del');
 
 _.str = require('underscore.string');
@@ -146,19 +147,35 @@ gulp.task('jshint', function () {
 
 gulp.task('js', function () {
   return streamqueue({objectMode: true},
-      //first, process vendor js,
+      //first, process vendor js, without iife so they are global
       gulp.src(vendorJsFiles),
+
+      //now, insert an IIFE header (yes .. really)
+      gulp.src(['./iife/header.js']),
 
       //then, process app js
       gulp.src(appJsFiles)
           .pipe(ngAnnotate())
-          .pipe(template(conf)),
+          .pipe(template(conf))
+          .pipe(wrap('(function(){ <%= contents %> })();'))
+      ,
 
       //finally, process templates
       gulp.src('app/templates/**/*.html')
           .pipe(plumber({errorHandler: onError}))
           .pipe(templateCache({module: 'app'}))
-          .pipe(htmlify()))
+          .pipe(htmlify())
+          .pipe(concat('templates.js'))
+          .pipe(wrap('(function(){ <%= contents %> })();'))
+      ,
+
+      //oh, and IIFE footer.  yeesh, this feels dirty.
+      //  i'm trying to this an meet the following criteria
+      //  1) end up with ONE app.js file to serve
+      //  2) only app/js/**/*.js and templates are wrapped in an IIFE, not vendor
+      //  3) sourcemaps don't break (concat can only be used once AFAIK)
+      //  4) no tempfiles
+      gulp.src(['./iife/footer.js']))
 
       .pipe(sourcemaps.init())
       .pipe(concat('app.js'))
