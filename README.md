@@ -4,9 +4,10 @@ A template for frontend web development with GulpJS, which includes:
 
 - Tasks for JS/JSHint, Less, Image compression, Web Components
 - Concatenation & Minification of JS, CSS, and your **Web Components**
-- Includes Polymer's core-elements & paper-elements
+- Includes Polymer's core-elements & paper-elements, using vulcanize
 - Error handling that doesn't break `gulp watch`
 - Nice gulp-notify configuration, with different sounds for success & failure
+- Compiles Angular Templates into the $templateCache.
 
 ## Getting Started
 
@@ -31,6 +32,11 @@ Deploy with the following:
 2) divshot push
 
 ## References
+
+### Firebase
+
+- [Official AngularFire/SimpleLogin Example](https://www.firebase.com/docs/web/libraries/angular/quickstart.html)
+- http://www.christopheresplin.com/single-page-app-architecture-connecting-to-firebase
 
 ### Web Audio API
 
