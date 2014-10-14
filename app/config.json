@@ -21,7 +21,7 @@
     }
   },
   "production": {
-    "api_url": "ng-rails-stack.herokuapp.com",
+    "api_url": "rails42.herokuapp.com",
     "assets_url": "//oscil.io/",
     "build_folder": "divshot",
     "googleAnalytics": {

@@ -23,6 +23,7 @@
     "angular-ui-router": "~0.2.x",
     "angular-bootstrap": "~0.11.x",
     "angulartics": "~0.17.0",
-    "restangular": "~1.4.0"
+    "restangular": "~1.4.0",
+    "ng-token-auth": "~0.0.23"
   }
 }

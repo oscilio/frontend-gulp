@@ -113,6 +113,7 @@ var vendorJsFiles = [
   "vendor/bower/angular-resource/angular-resource.js",
   "vendor/bower/angular-bootstrap/ui-bootstrap-tpls.js",
   "vendor/bower/angular-ui-router/release/angular-ui-router.js",
+  "vendor/bower/ng-token-auth/dist/ng-token-auth.js",
   "vendor/bower/angulartics/src/angulartics.js",
   "vendor/bower/angulartics/src/angulartics-ga.js",
   "vendor/bower/restangular/dist/restangular.js"
