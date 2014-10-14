@@ -9,9 +9,7 @@ angular.module('app',
       'angulartics',
       'angulartics.google.analytics'])
 
-    .config(function ($stateProvider,
-                      $locationProvider,
-                      $urlRouterProvider) {
+    .config(function ($stateProvider, $locationProvider, $urlRouterProvider) {
 
       // states: unauthenticated
       // home - / - prompt to signup
@@ -64,19 +62,24 @@ angular.module('app',
           .state('users', {
             url: "/users",
             templateUrl: "users/index.html",
-            controller: "UsersIndexCtrl"
+            controller: "UsersIndexCtrl",
+            resolve: {
+              auth: function($auth) {
+                return $auth.validateUser();
+              }
+            }
           });
 
     })
 
-    .config(function($authProvider) {
-      $authProvider.configure({
-        apiUrl: 'http://api.example.com'
-      });
-    })
-
     .constant('CFG', {
       apiUrl: '<%= api_url %>'
+    })
+
+    .config(function($authProvider, CFG) {
+      $authProvider.configure({
+        apiUrl: '//' + CFG.apiUrl
+      });
     })
 
     .constant('USER_ROLES', {

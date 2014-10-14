@@ -87,18 +87,16 @@ angular.module('app')
           configFiles: true
         }
       ];
-
-
     })
 
-    .controller("NavbarCtrl", function ($scope, $location, $modal) {
+    .controller("NavbarCtrl", function ($scope, $location, $modal, $auth) {
 
       $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();
       };
 
       //TODO: replace $scope.currentUser and $scope.loggedIn
-      $scope.currentUser = false;
+      $scope.currentUser = null;
       $scope.loggedIn = false;
 
       //TODO: refactor to SignupBtnCtrl, but $scope.signup is not passed when i do this
@@ -119,27 +117,24 @@ angular.module('app')
 
         modalInstance.result.then(function (signup) {
           $scope.signupAlerts = [];
-          //TODO: replace with $auth
-          //RegistrationService.signup(signup,
-          //    function (res) {
-          //      //TODO: show alert somewhere .. or another modal?
-          //      alert('great success');
-          //    },
-          //    function (res) {
-          //      //TODO: gotta be a better way to handle these errors
-          //      $scope.signupAlerts = _.flatten(
-          //          _.map(res.errors, function (v, k) {
-          //            return _.map(v, function (msg) {
-          //              return {
-          //                type: "error",
-          //                msg: k + " " + msg
-          //              };
-          //            });
-          //          }));
-          //
-          //      $scope.openSignupModal();
-          //      //TODO: signup error callback:
-          //    });
+          $auth.submitRegistration(signup)
+              .then(function(res) {
+                $scope.signupAlerts = [];
+                alert('great success');
+              })
+              .catch(function(res) {
+                console.log(res);
+                if (res.status == 403) {
+                  $scope.signupAlerts = _.flatten(
+                    _.map(res.data.errors, function (v, k) {
+                      return _.map(v, function (msg) {
+                        return { type: "error", msg: k + " " + msg };
+                      });
+                    }));
+                }
+                console.log($scope.signupAlerts);
+                $scope.openSignupModal();
+              });
         }, function (message) {
           //TODO: cancel function
         });
@@ -162,16 +157,21 @@ angular.module('app')
 
         modalInstance.result.then(function (creds) {
           $scope.loginAlerts = [];
-          //TODO: replace with $auth
-          //AuthenticationService.login(creds,
-          //    function (res) {
-          //      $scope.currentUser = Session.email;
-          //      $scope.loggedIn = AuthenticationService.isAuthenticated();
-          //    },
-          //    function (res) {
-          //      $scope.loginAlerts.push({type: "error", msg: res.error});
-          //      $scope.openLoginModal();
-          //    });
+          $auth.submitLogin(creds)
+              .then(function(res) {
+                $scope.currentUser = 'fdsa@fdsa.com';
+                $scope.loggedIn = true;
+                $scope.loginAlerts = [];
+                console.log(res);
+              })
+              .catch(function(res) {
+                $scope.currentUser = null;
+                $scope.loggedIn = false;
+                $scope.loginAlerts = _.map(res.errors, function(e) {
+                  return {type: 'error', msg: e};
+                });
+                $scope.openLoginModal();
+              });
         });
       };
     })
@@ -187,10 +187,6 @@ angular.module('app')
       $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
       };
-    })
-
-    .controller("LoginCtrl", function ($scope, $modalInstance, creds, Users) {
-
     })
 
     .controller("LoginModalCtrl", function ($scope, $modalInstance, creds, Users) {
