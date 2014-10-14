@@ -5,6 +5,7 @@ angular.module('app',
       'restangular',
       'ui.bootstrap',
       'ui.router',
+      'ng-token-auth',
       'angulartics',
       'angulartics.google.analytics'])
 
@@ -68,47 +69,14 @@ angular.module('app',
 
     })
 
-    .config(function ($locationProvider, $httpProvider) {
-      $httpProvider.responseInterceptors.push('httpInterceptor');
-
-      // if (angular.element('meta[name=csrf-token]'))
-      // {
-      //   $httpProvider.defaults.headers.common['X-CSRF-Token'] = angular.element('meta[name=csrf-token]').attr('content');
-      // }
-
-      //TODO: fix http interceptor, success/error functions seem to be overriding other callbacks
-      //   var interceptor = function($location, $rootScope, $q) {
-      //     function success(response) {
-      //       return response;
-      //     }
-
-      //     function error(response) {
-      //       if (response.status === 401) {
-      //         $rootScope.$broadcast('event:unauthorized');
-      //         $location.path('/users/login');
-      //         return response;
-      //       }
-      //       return $q.reject(response);
-      //     }
-
-      //     return function(promise) {
-      //       return promise.then(success, error);
-      //     };
-      //   };
-      //   $httpProvider.responseInterceptors.push(interceptor);
+    .config(function($authProvider) {
+      $authProvider.configure({
+        apiUrl: 'http://api.example.com'
+      });
     })
 
     .constant('CFG', {
       apiUrl: '<%= api_url %>'
-    })
-
-    .constant('AUTH_EVENTS', {
-      loginSuccess: 'auth-login-success',
-      loginFailed: 'auth-login-failed',
-      logoutSuccess: 'auth-logout-success',
-      sessionTimeout: 'auth-session-timeout',
-      notAuthenticated: 'auth-not-authenticated',
-      notAuthorized: 'auth-not-authorized'
     })
 
     .constant('USER_ROLES', {
@@ -117,41 +85,6 @@ angular.module('app',
       guest: 'guest'
     })
 
-    .run(function ($rootScope, $location, AuthenticationService, Session, $cookies) {
-
-      //==================
-      // debugging
-      //==================
-
-      $rootScope.log = function (thing) {
-        console.log(thing);
-      };
-
-      $rootScope.alert = function (thing) {
-        alert(thing);
-      };
-
-      //==================
-      // authentication
-      //==================
-      var routesThatDontRequireAuth = ['/login', '/home', '/about', '/explore', '/error'];
-
-      // check if current location matches route
-      var routeClean = function (route) {
-        return _.find(routesThatDontRequireAuth,
-            function (noAuthRoute) {
-              return _.str.startsWith(route, noAuthRoute);
-            });
-      };
-
-      $rootScope.$on('$stateChangeStart', function (ev, to, toParams, from, fromParams) {
-        // if route requires auth and user is not logged in
-        if (!routeClean($location.url()) && !AuthenticationService.isAuthenticated()) {
-          // redirect back to login
-          ev.preventDefault();
-          $location.path('/home');
-        }
-
-      });
+    .run(function ($rootScope, $location) {
 
     });

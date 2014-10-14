@@ -1,5 +1,5 @@
 angular.module('app')
-    .controller('HomeCtrl', function ($scope, $location, AuthenticationService) {
+    .controller('HomeCtrl', function ($scope, $location) {
       $scope.title = "Home";
       $scope.message = "Try mousing over elements to see a directive at work";
 
@@ -9,11 +9,11 @@ angular.module('app')
       };
 
       $scope.logout = function () {
-        AuthenticationService.logout().success(onLogoutSuccess);
+        //TODO: replace
       };
     })
 
-    .controller("ExploreCtrl", function ($scope, $location, AuthenticationService) {
+    .controller("ExploreCtrl", function ($scope, $location) {
       $scope.sounds = [
         {
           id: '1',
@@ -91,18 +91,15 @@ angular.module('app')
 
     })
 
-    .controller("NavbarCtrl", function ($scope, $location, $modal, AuthenticationService, Session, RegistrationService) {
+    .controller("NavbarCtrl", function ($scope, $location, $modal) {
 
       $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();
       };
 
-      //TODO: bind to remove function? (currentUser & loggedIn)
-      if ($scope.currentUser === undefined) {
-        //TODO: get the rest of the session attributes
-        $scope.currentUser = Session.email;
-      }
-      $scope.loggedIn = AuthenticationService.isAuthenticated();
+      //TODO: replace $scope.currentUser and $scope.loggedIn
+      $scope.currentUser = false;
+      $scope.loggedIn = false;
 
       //TODO: refactor to SignupBtnCtrl, but $scope.signup is not passed when i do this
       $scope.signup = {username: '', email: '', password: '', passwordConfirmation: ''};
@@ -122,33 +119,33 @@ angular.module('app')
 
         modalInstance.result.then(function (signup) {
           $scope.signupAlerts = [];
-          RegistrationService.signup(signup,
-              function (res) {
-                //TODO: show alert somewhere .. or another modal?
-                alert('great success');
-              },
-              function (res) {
-                //TODO: gotta be a better way to handle these errors
-                $scope.signupAlerts = _.flatten(
-                    _.map(res.errors, function (v, k) {
-                      return _.map(v, function (msg) {
-                        return {
-                          type: "error",
-                          msg: k + " " + msg
-                        };
-                      });
-                    }));
-
-                $scope.openSignupModal();
-                //TODO: signup error callback:
-              });
+          //TODO: replace with $auth
+          //RegistrationService.signup(signup,
+          //    function (res) {
+          //      //TODO: show alert somewhere .. or another modal?
+          //      alert('great success');
+          //    },
+          //    function (res) {
+          //      //TODO: gotta be a better way to handle these errors
+          //      $scope.signupAlerts = _.flatten(
+          //          _.map(res.errors, function (v, k) {
+          //            return _.map(v, function (msg) {
+          //              return {
+          //                type: "error",
+          //                msg: k + " " + msg
+          //              };
+          //            });
+          //          }));
+          //
+          //      $scope.openSignupModal();
+          //      //TODO: signup error callback:
+          //    });
         }, function (message) {
           //TODO: cancel function
         });
 
       };
 
-      //TODO: refactor to LoginBtnCtrl, but $scope.creds is not passed when i do this
       $scope.creds = {email: '', password: '', remember_me: false};
       $scope.loginAlerts = [];
       $scope.openLoginModal = function () {
@@ -165,20 +162,21 @@ angular.module('app')
 
         modalInstance.result.then(function (creds) {
           $scope.loginAlerts = [];
-          AuthenticationService.login(creds,
-              function (res) {
-                $scope.currentUser = Session.email;
-                $scope.loggedIn = AuthenticationService.isAuthenticated();
-              },
-              function (res) {
-                $scope.loginAlerts.push({type: "error", msg: res.error});
-                $scope.openLoginModal();
-              });
+          //TODO: replace with $auth
+          //AuthenticationService.login(creds,
+          //    function (res) {
+          //      $scope.currentUser = Session.email;
+          //      $scope.loggedIn = AuthenticationService.isAuthenticated();
+          //    },
+          //    function (res) {
+          //      $scope.loginAlerts.push({type: "error", msg: res.error});
+          //      $scope.openLoginModal();
+          //    });
         });
       };
     })
 
-    .controller("SignupModalCtrl", function ($scope, $modalInstance, signup, RegistrationService) {
+    .controller("SignupModalCtrl", function ($scope, $modalInstance, signup) {
       //TODO: fix white at bottom of modal bc of form
 
       $scope.ok = function () {
@@ -191,11 +189,11 @@ angular.module('app')
       };
     })
 
-    .controller("LoginCtrl", function ($scope, $modalInstance, creds, AuthenticationService, Users) {
+    .controller("LoginCtrl", function ($scope, $modalInstance, creds, Users) {
 
     })
 
-    .controller("LoginModalCtrl", function ($scope, $modalInstance, creds, AuthenticationService, Users) {
+    .controller("LoginModalCtrl", function ($scope, $modalInstance, creds, Users) {
       //TODO: fix white at bottom of modal bc of form
 
       //TODO: consolidate and use same controller for modal & page?
