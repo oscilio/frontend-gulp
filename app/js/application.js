@@ -78,7 +78,10 @@ angular.module('app',
 
     .config(function($authProvider, CFG) {
       $authProvider.configure({
-        apiUrl: '//' + CFG.apiUrl
+        apiUrl: '//' + CFG.apiUrl,
+        authProviderPaths: {
+          google_oauth2: '/auth/google_oauth2'
+        }
       });
     })
 

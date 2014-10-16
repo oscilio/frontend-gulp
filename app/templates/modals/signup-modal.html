@@ -20,6 +20,11 @@
       <input type="password" id="signupPasswordConfirm" name="passwordConfirmation" placeholder="Confirm" ng-model="signup.passwordConfirmation" required="required" class="form-control"/>
     </div>
     <div class="form-group">
+      <button type="button" ng-click="authWith('google_oauth2')" class="btn btn-danger">
+        <i class="fa fa-google fa-lg">&nbsp;&nbsp;Sign in with Google</i>
+      </button>
+    </div>
+    <div class="form-group">
       <alert ng-repeat="alert in signupAlerts" type="{{alert.type == 'error' ? 'danger' : alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
     </div>
   </div>

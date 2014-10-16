@@ -176,30 +176,48 @@ angular.module('app')
       };
     })
 
-    .controller("SignupModalCtrl", function ($scope, $modalInstance, signup) {
-      //TODO: fix white at bottom of modal bc of form
-
+    .controller("SignupModalCtrl", function ($scope, $modalInstance, $auth, signup) {
       $scope.ok = function () {
-        //TODO: client-side validation
         $modalInstance.close(signup);
       };
 
       $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
       };
+
+      $scope.authWith = function (provider) {
+        debugger;
+        $auth.authenticate(provider)
+            .then(function(res) {
+              console.log(res);
+              $modalInstance.dismiss('cancel');
+            })
+            .catch(function(res) {
+              console.log(res);
+              alert('oauth failed');
+            });
+      };
     })
 
-    .controller("LoginModalCtrl", function ($scope, $modalInstance, creds, Users) {
-      //TODO: fix white at bottom of modal bc of form
-
-      //TODO: consolidate and use same controller for modal & page?
+    .controller("LoginModalCtrl", function ($scope, $modalInstance, $auth, creds) {
       $scope.ok = function () {
-        //TODO: client-side validation
         $modalInstance.close(creds);
       };
 
       $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
+      };
+
+      $scope.authWith = function (provider) {
+        $auth.authenticate(provider)
+            .then(function(res) {
+              console.log(res);
+              $modalInstance.dismiss('cancel');
+            })
+            .catch(function(res) {
+              console.log(res);
+              alert('oauth failed');
+            });
       };
     })
 
