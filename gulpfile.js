@@ -91,7 +91,7 @@ var node_env = process.env.NODE_ENV || 'development',
         _.pick(pkg, 'title', 'description'),
         config['common'],
         config[node_env],
-        {ustr: _.str} // makes underscore.str available in templates
+        {ustr: _.str, node_env: node_env} // makes underscore.str available in templates
     );
 
 var buildFolder = conf["build_folder"] || "dist";
@@ -124,6 +124,12 @@ var appJsFiles = [
   "app/js/**/*.js"
 ];
 
+//Add angular mocks, but only in development/test
+if (node_env == 'development' || node_env == 'test') {
+  vendorJsFiles = vendorJsFiles.concat(['vendor/bower/angular-mocks/angular-mocks.js']);
+  appJsFiles = appJsFiles.concat(['app/mocks.js']);
+}
+
 //TODO: fix JS Hint, so that it's relevant
 //  i only want it to lint my files, but it needs the vendor files for reference...
 gulp.task('jshint', function () {
@@ -155,8 +161,8 @@ gulp.task('js', function () {
       //then, process app js
       gulp.src(appJsFiles)
           .pipe(plumber({errorHandler: onError}))
-          .pipe(ngAnnotate())
           .pipe(template(conf))
+          .pipe(ngAnnotate())
           .pipe(wrap('(function(){ \'use strict\'; <%= contents %> })();')),
 
       //finally, process templates
@@ -270,7 +276,7 @@ gulp.task('watch', function () {
   fatalLevel = fatalLevel || 'off';
   gulp.watch('app/config.json', ['js', 'html']);
   gulp.watch('app/css/**/*.less', ['less']);
-  gulp.watch(['app/js/**/*.js', 'app/templates/**/*.html'], ['js']);
+  gulp.watch(['app/js/**/*.js', 'app/templates/**/*.html', 'app/mocks.js'], ['js']);
   gulp.watch('app/sounds/**/*', ['sounds']);
   gulp.watch('app/img/**/*', ['img']);
   gulp.watch('app/pages/**/*.html', ['html']);

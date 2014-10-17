@@ -1,14 +1,16 @@
 {
   "common": {
     "api_url": "localhost:3000",
+    "api_protocol": "http",
     "assets_url": "//localhost:8000/",
     "app_js": "js/app.js",
     "app_css": "css/app.css",
     "app_components": "components/build.html",
-    "build_folder": "dist"
+    "build_folder": "dist",
+    "ng_mocks": false
   },
   "development": {
-
+    "ng_mocks": true
   },
   "divshot": {
     "assets_url": "//development.oscillate.divshot.io/",
