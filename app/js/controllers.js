@@ -117,20 +117,25 @@ angular.module('app')
 
         modalInstance.result.then(function (signup) {
           $scope.signupAlerts = [];
-          $auth.submitRegistration(signup)
-              .then(function(res) {
+          $auth.submitRegistration({
+            email: signup.email,
+            username: signup.username,
+            password: signup.password,
+            password_confirmation: signup.passwordConfirmation
+          })
+              .then(function (res) {
                 $scope.signupAlerts = [];
                 alert('great success');
               })
-              .catch(function(res) {
+              .catch(function (res) {
                 console.log(res);
                 if (res.status == 403) {
                   $scope.signupAlerts = _.flatten(
-                    _.map(res.data.errors, function (v, k) {
-                      return _.map(v, function (msg) {
-                        return { type: "error", msg: k + " " + msg };
-                      });
-                    }));
+                      _.map(res.data.errors, function (v, k) {
+                        return _.map(v, function (msg) {
+                          return {type: "error", msg: k + " " + msg};
+                        });
+                      }));
                 }
                 console.log($scope.signupAlerts);
                 $scope.openSignupModal();
@@ -158,16 +163,13 @@ angular.module('app')
         modalInstance.result.then(function (creds) {
           $scope.loginAlerts = [];
           $auth.submitLogin(creds)
-              .then(function(res) {
-                $scope.currentUser = 'fdsa@fdsa.com';
-                $scope.loggedIn = true;
+              .then(function (res) {
                 $scope.loginAlerts = [];
                 console.log(res);
               })
-              .catch(function(res) {
-                $scope.currentUser = null;
-                $scope.loggedIn = false;
-                $scope.loginAlerts = _.map(res.errors, function(e) {
+              .catch(function (res) {
+                console.log(res);
+                $scope.loginAlerts = _.map(res.errors, function (e) {
                   return {type: 'error', msg: e};
                 });
                 $scope.openLoginModal();
@@ -188,12 +190,10 @@ angular.module('app')
       $scope.authWith = function (provider) {
         debugger;
         $auth.authenticate(provider)
-            .then(function(res) {
-              console.log(res);
+            .then(function (res) {
               $modalInstance.dismiss('cancel');
             })
-            .catch(function(res) {
-              console.log(res);
+            .catch(function (res) {
               alert('oauth failed');
             });
       };
@@ -210,12 +210,10 @@ angular.module('app')
 
       $scope.authWith = function (provider) {
         $auth.authenticate(provider)
-            .then(function(res) {
-              console.log(res);
+            .then(function (res) {
               $modalInstance.dismiss('cancel');
             })
-            .catch(function(res) {
-              console.log(res);
+            .catch(function (res) {
               alert('oauth failed');
             });
       };
