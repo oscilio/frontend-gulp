@@ -31,7 +31,26 @@ Deploy with the following:
 1) NODE_ENV=divshot gulp
 2) divshot push
 
+## Running Unit Tests
+
+Not set up yet
+
+## Running Integration Tests
+
+1) Install Protractor with `npm install -g protractor`
+2) Setup Selenium (you'll need JDK) with `webdriver-manager update`
+3) Start your selenium server `webdriver-manager start`
+4) Run the tests with `protractor spec/conf.js`
+
+TODO: setup gulp-protractor-qa
+
 ## References
+
+### Testing AngularJS
+
+- http://quickleft.com/blog/angularjs-unit-testing-for-real-though
+- https://ramonvictor.github.io/protractor/slides/#/49
+- https://www.youtube.com/watch?v=aQipuiTcn3U
 
 ### Firebase
 
