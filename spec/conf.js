@@ -10,7 +10,7 @@ exports.config = {
     includeStackTrace: true
   },
 
-  //onPrepare: function() { },
+  //onPrepare: function() { browser.get('http://localhost:8000/'); },
 
   params: {
     login: {
