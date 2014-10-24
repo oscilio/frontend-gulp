@@ -6,6 +6,7 @@ angular.module('app',
       'ui.bootstrap',
       'ui.router',
       'ng-token-auth',
+      'app.auth',
       'angulartics',
       'angulartics.google.analytics'])
 

@@ -120,6 +120,7 @@ var vendorJsFiles = [
 ];
 
 var appJsFiles = [
+  "app/js/auth.js",
   "app/js/application.js",
   "app/js/**/*.js"
 ];
