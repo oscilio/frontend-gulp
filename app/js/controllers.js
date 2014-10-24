@@ -125,7 +125,6 @@ angular.module('app')
           })
               .then(function (res) {
                 $scope.signupAlerts = [];
-                alert('great success');
               })
               .catch(function (res) {
                 console.log(res);
