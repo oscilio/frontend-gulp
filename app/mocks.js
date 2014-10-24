@@ -8,14 +8,25 @@ angular.module('apimocks', ['ngMockE2E'])
       return {
         loginValid: function (data) {
           return [200, {
-            username: data.username,
-            email: data.email
+            "data": {
+              id: 2,
+              username: data.username,
+              email: data.email,
+              name: null,
+              nickname: null,
+              image: null,
+              provider: "email",
+              uid: data.email
+            }
           }];
         },
         loginInvalid: function (data) {
-          return [403, {
-            username: data.username,
-            email: data.email
+          return [401, {"errors": ["Invalid login credentials. Please try again."]}]
+        },
+        loginNeedConfirmation: function (data) {
+          return [401, {
+            "success": false,
+            "errors": ["A confirmation email was sent to your account at " + data.email + ". You must follow the instructions in the email before your account can be activated"]
           }]
         },
         tokenValid: function (data, hdr) {
@@ -31,7 +42,7 @@ angular.module('apimocks', ['ngMockE2E'])
               uid: "101629501302231591688",
               username: data.username
             }
-          }, { "Access-Token": hdr.token }];
+          }, {"Access-Token": hdr.token}];
         },
         tokenInvalid: function () {
           return [401, {
@@ -82,16 +93,17 @@ angular.module('apimocks', ['ngMockE2E'])
         login: function (method, url, data, headers) {
           if (data.password == 'password') {
             return responsesFactory.loginValid(data);
+            //TODO: mocks for unconfirmed users
           } else {
             return responsesFactory.loginInvalid(data);
           }
         },
         signup: function (method, url, data, headers) {
-          if(data.password != data.password_confirmation) {
+          if (data.password != data.password_confirmation) {
             //TODO: mock password confirmation error?
-            return responsesFactory.signupInvalid(data, { password: ['errors'] });
+            return responsesFactory.signupInvalid(data, {password: ['errors']});
           } else if (data.username == 'dupe@dupe.com') {
-            return responsesFactory.signupInvalid(data, { email: ['This email address is already in use'] });
+            return responsesFactory.signupInvalid(data, {email: ['This email address is already in use']});
           } else {
             return responsesFactory.signupValid(data);
           }
@@ -103,14 +115,14 @@ angular.module('apimocks', ['ngMockE2E'])
       };
     })
 
-    .service('res', function(responses) {
+    .service('res', function (responses) {
       // based on the compose pattern, returns a function that transforms arguments
       this.with = function (resType) {
         var self = this;
         var transformFn = function (method, url, data, headers) {
           return [method, url, JSON.parse(data || '{}'), headers];
         };
-        return function(method, url, data, headers) {
+        return function (method, url, data, headers) {
           return responses[resType].apply(this, transformFn.apply(this, arguments));
         }
       }
@@ -141,7 +153,10 @@ angular.module('apimocks', ['ngMockE2E'])
       $httpBackend.whenPOST(all_api_routes).passThrough();
     });
 
-<% if (typeof ng_mocks != 'undefined' && ng_mocks) { %>
+<%
+if (typeof ng_mocks != 'undefined' && ng_mocks) { %>
   // only load the module when running with ng_mocks configured
-  angular.module('app').requires.push('apimocks');
-<% } %>
+  //angular.module('app').requires.push('apimocks');
+<%
+}
+%>
