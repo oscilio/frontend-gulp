@@ -3,13 +3,6 @@
 // - and will only be enabled when ng_mocks == true in config.json
 // see this blog for more info: http://www.base2.io/2013/10/29/conditionally-mock-http-backend/
 
-Function.prototype.compose = function(argFn) {
-  var self = this;
-  return function() {
-    return self.call(this, argFn.apply(this, arguments));
-  }
-};
-
 angular.module('apimocks', ['ngMockE2E'])
     .factory('responsesFactory', function () {
       return {
@@ -124,10 +117,23 @@ angular.module('apimocks', ['ngMockE2E'])
     })
 
     .run(function ($httpBackend, res) {
-      var apiUrl = '<%= api_protocol %>://<%= api_url %>';
-      $httpBackend.whenPOST(apiUrl + '/auth/sign_in').respond(res.with('login'));
-      $httpBackend.whenPOST(apiUrl + '/auth').respond(res.with('signup'));
-      $httpBackend.whenGET(apiUrl + '/auth/validate_token').respond(res.with('validateToken'));
+      var apiUrl = '<%= api_protocol %>://<%= api_url %>',
+          authUrl = apiUrl + '/auth',
+          oauthProvider = 'google_oauth2';
+      $httpBackend.whenPOST(authUrl).respond(res.with('signup'));
+      $httpBackend.whenPOST(authUrl + '/sign_in').respond(res.with('login'));
+      $httpBackend.whenGET(authUrl + '/validate_token').respond(res.with('validateToken')); //TODO: docs say POST, but i saw GET
+
+      //TODO: implement mocks for these requests
+      $httpBackend.whenPUT(authUrl).passThrough();
+      $httpBackend.whenDELETE(authUrl).passThrough();
+      $httpBackend.whenDELETE(authUrl + '/sign_out').passThrough();
+      $httpBackend.whenPOST(authUrl + '/password').passThrough();
+      $httpBackend.whenPUT(authUrl + '/password').passThrough();
+      $httpBackend.whenGET(authUrl + '/password/edit').passThrough();
+      $httpBackend.whenGET(authUrl + '/' + oauthProvider).passThrough();
+      $httpBackend.whenGET(authUrl + '/' + oauthProvider + '/callback').passThrough();
+      $httpBackend.whenPOST(authUrl + '/' + oauthProvider + '/callback').passThrough();
 
       // For everything else, don't mock
       var all_api_routes = /<%= api_url %>.*/;
