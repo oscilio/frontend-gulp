@@ -1,21 +1,5 @@
 angular.module('app.auth', [])
     .run(function ($rootScope) {
-      function loginSuccess (ev, user) {
-        console.log(ev);
-        console.log(user);
-        console.log(user.email);
-        console.log(user.username);
-      }
-
-      function loginError (ev, reason) {
-        console.log(ev);
-        console.log(reason);
-        console.log(reason.errors[0]);
-      }
-
-      $rootScope.$on('auth:login-success', loginSuccess);
-      $rootScope.$on('auth:login-error', loginError);
-
       //auth:validation-success
       //auth:validation-error
       //auth:logout-success

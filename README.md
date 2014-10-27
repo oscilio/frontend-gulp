@@ -21,6 +21,8 @@ A template for frontend web development with GulpJS, which includes:
 1. `gulp webserver` to run the gulp-webserver to serve static files
 1. Connect to [http://localhost:8000](http://localhost:8000)
 
+Also, note that in config.json, you can set `ng_mocks = false` if you do not want to use the API mocks in `app/mocks.js`.
+
 ## Deploying
 
 The app is hosted at [development.oscillate.divshot.io](http://development.oscillate.divshot.io).  Divshot is a
@@ -45,6 +47,11 @@ Not set up yet
 TODO: setup gulp-protractor-qa
 
 ## References
+
+### Events - broadcasting, emitting and using $rootScope
+
+- http://www.quora.com/Is-it-a-bad-practice-to-always-use-broadcast-on-on-the-rootScope-in-AngularJS
+- https://groups.google.com/forum/#!topic/angular/WQyObwkK6vE
 
 ### Testing AngularJS
 

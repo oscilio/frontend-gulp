@@ -156,7 +156,7 @@ angular.module('apimocks', ['ngMockE2E'])
 <%
 if (typeof ng_mocks != 'undefined' && ng_mocks) { %>
   // only load the module when running with ng_mocks configured
-  //angular.module('app').requires.push('apimocks');
+  angular.module('app').requires.push('apimocks');
 <%
 }
 %>
