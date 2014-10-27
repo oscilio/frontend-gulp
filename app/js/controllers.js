@@ -17,25 +17,10 @@ angular.module('app')
       $scope.sounds = Sounds.queryTopSounds();
     })
 
-    .controller("NavbarCtrl", function ($scope, $location, $modal, $auth) {
+    .controller("NavbarCtrl", function ($rootScope, $scope, $location, $modal, $auth) {
       //TODO: replace loggedIn with function based on currentUser
-      $scope.currentUser = $scope.currentUser || null;
-      $scope.loggedIn = $scope.loggedIn || null;
-
-      function loginSuccess (ev, user) {
-        $scope.currentUser = user.email;
-        $scope.loggedIn = true;
-      }
-
-      function loginError (ev, reason) {
-        $scope.currentUser = null;
-        $scope.currentUser = false;
-      }
-
-      $scope.$on('auth:login-success', loginSuccess);
-      $scope.$on('auth:login-error', loginError);
-      $scope.$on('auth:validation-success', loginSuccess);
-      $scope.$on('auth:validation-error', loginError);
+      $scope.user = $rootScope.user;
+      $scope.loggedIn = $rootScope.loggedIn;
 
       $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();

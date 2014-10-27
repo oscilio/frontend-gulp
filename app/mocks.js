@@ -33,16 +33,16 @@ angular.module('apimocks', ['ngMockE2E'])
           return [200, {
             success: true,
             data: {
-              email: data.email,
+              email: (hdr.uid && /@/.test(hdr.uid)) ? hdr.uid : 'someuser@gmail.com',
               id: 1,
               image: "https://lh6.googleusercontent.com/-QE-jtro9Brs/AAAAAAAAAAI/AAAAAAAAAAw/vJ0Msp_Ob1o/photo.jpg?sz=50",
               name: "Email Oscillator",
               nickname: null,
-              provider: "google_oauth2",
-              uid: "101629501302231591688",
+              provider: (hdr.uid && /@/.test(hdr.uid)) ? "email" : "google_oauth2",
+              uid: hdr.uid || "101629501302231591688",
               username: data.username
             }
-          }, {"Access-Token": hdr.token}];
+          }, {"Access-Token": hdr['access-token']}];
         },
         tokenInvalid: function () {
           return [401, {

@@ -1,7 +1,23 @@
 angular.module('app.auth', [])
     .run(function ($rootScope) {
-      //auth:validation-success
-      //auth:validation-error
+      $rootScope.user = $rootScope.user || {};
+      $rootScope.loggedIn = $rootScope.loggedIn || false;
+
+      function loginSuccess (ev, user) {
+        $rootScope.user = user;
+        $rootScope.loggedIn = true;
+      }
+
+      function loginError (ev, reason) {
+        $rootScope.user = {};
+        $rootScope.loggedIn = false;
+      }
+
+      $rootScope.$on('auth:login-success', loginSuccess);
+      $rootScope.$on('auth:login-error', loginError);
+      $rootScope.$on('auth:validation-success', loginSuccess);
+      $rootScope.$on('auth:validation-error', loginError);
+
       //auth:logout-success
       //auth:logout-error
       //auth:registration-email-success

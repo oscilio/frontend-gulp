@@ -80,6 +80,7 @@ angular.module('app',
     .config(function($authProvider, CFG) {
       $authProvider.configure({
         apiUrl: '<%= api_protocol %>://' + CFG.apiUrl,
+        validateOnPageLoad: true,
         authProviderPaths: {
           google_oauth2: '/auth/google_oauth2'
         }
