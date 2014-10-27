@@ -7,6 +7,16 @@ angular.module('apimocks', ['ngMockE2E'])
     .service('resourceFactory', function () {
       var resourceFactory = {};
 
+      resourceFactory.ngTokenAuthHeaders = function (hdr) {
+        return {
+          "Access-Token": hdr['access-token'] || 'dvkMmiU0mY4EEpBQJnW87w',
+          "Token-Type": 'Bearer',
+          "Expiry": '',
+          "Uid": hdr.uid || "101629501302231591688",
+          "Client": hdr.client || 'dBQGvnUllD5jRlCitksXGg'
+        }
+      };
+
       resourceFactory.user = function (data) {
         return _.extend({
           id: 1,
@@ -27,7 +37,8 @@ angular.module('apimocks', ['ngMockE2E'])
 
     .factory('responsesFactory', function (resourceFactory) {
       return {
-        loginValid: function (data) {
+        signinValid: function (data, hdr) {
+          var resHdr = resourceFactory.ngTokenAuthHeaders(_.extend(hdr, {uid: data.email}));
           return [200, {
             "data": {
               id: 2,
@@ -39,16 +50,22 @@ angular.module('apimocks', ['ngMockE2E'])
               provider: "email",
               uid: data.email
             }
-          }];
+          }, resHdr];
         },
-        loginInvalid: function (data) {
+        signinInvalid: function (data) {
           return [401, {"errors": ["Invalid login credentials. Please try again."]}]
         },
-        loginNeedConfirmation: function (data) {
+        signinNeedConfirmation: function (data) {
           return [401, {
             "success": false,
             "errors": ["A confirmation email was sent to your account at " + data.email + ". You must follow the instructions in the email before your account can be activated"]
           }]
+        },
+        signoutValid: function (data) {
+          return [200, {success: true}];
+        },
+        signoutInvalid: function (data) {
+          return [404, {"errors": ["User was not found or was not logged in."]}];
         },
         tokenValid: function (data, hdr) {
           return [200, {
@@ -63,7 +80,7 @@ angular.module('apimocks', ['ngMockE2E'])
               uid: hdr.uid || "101629501302231591688",
               username: data.username
             }
-          }, {"Access-Token": hdr['access-token']}];
+          }, resourceFactory.ngTokenAuthHeaders(hdr)];
         },
         tokenInvalid: function () {
           return [401, {
@@ -114,23 +131,24 @@ angular.module('apimocks', ['ngMockE2E'])
             username: 'foo',
             nickname: 'foobar',
             uid: 'foo@foo.com'
-          },{
+          }, {
             id: 2,
             email: 'bar@bar.com',
             name: 'Bar Baz',
             username: 'bar',
             nickname: 'barbaz',
             uid: 'bar@bar.com'
-          },{
+          }, {
             id: 3,
             email: 'baz@baz.com',
             name: 'Baz Qux',
             username: 'baz',
             nickname: 'bazqux',
             uid: 'baz@baz.com'
-          }], function(u) { return resourceFactory.user(u) });
+          }], function (u) {
+            return resourceFactory.user(u)
+          });
 
-          console.log(users);
           return [200, users];
         }
       }
@@ -138,13 +156,16 @@ angular.module('apimocks', ['ngMockE2E'])
 
     .factory('responses', function (responsesFactory) {
       return {
-        login: function (method, url, data, headers) {
+        signin: function (method, url, data, headers) {
           if (data.password == 'password') {
-            return responsesFactory.loginValid(data);
+            return responsesFactory.signinValid(data, headers);
             //TODO: mocks for unconfirmed users
           } else {
-            return responsesFactory.loginInvalid(data);
+            return responsesFactory.signinInvalid(data);
           }
+        },
+        signout: function (method, url, data, headers) {
+          return responsesFactory.signoutValid(data);
         },
         signup: function (method, url, data, headers) {
           if (data.password != data.password_confirmation) {
@@ -185,13 +206,13 @@ angular.module('apimocks', ['ngMockE2E'])
           apiBaseUrl = apiUrl + '/api/v1',
           oauthProvider = 'google_oauth2';
       $httpBackend.whenPOST(authUrl).respond(res.with('signup'));
-      $httpBackend.whenPOST(authUrl + '/sign_in').respond(res.with('login'));
+      $httpBackend.whenPOST(authUrl + '/sign_in').respond(res.with('signin'));
       $httpBackend.whenGET(authUrl + '/validate_token').respond(res.with('validateToken')); //TODO: docs say POST, but i saw GET
+      $httpBackend.whenDELETE(authUrl + '/sign_out').respond(res.with('signout'));
 
       //TODO: implement mocks for these requests
       $httpBackend.whenPUT(authUrl).passThrough();
       $httpBackend.whenDELETE(authUrl).passThrough();
-      $httpBackend.whenDELETE(authUrl + '/sign_out').passThrough();
       $httpBackend.whenPOST(authUrl + '/password').passThrough();
       $httpBackend.whenPUT(authUrl + '/password').passThrough();
       $httpBackend.whenGET(authUrl + '/password/edit').passThrough();
