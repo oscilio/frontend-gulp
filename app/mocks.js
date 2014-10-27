@@ -4,7 +4,28 @@
 // see this blog for more info: http://www.base2.io/2013/10/29/conditionally-mock-http-backend/
 
 angular.module('apimocks', ['ngMockE2E'])
-    .factory('responsesFactory', function () {
+    .service('resourceFactory', function () {
+      var resourceFactory = {};
+
+      resourceFactory.user = function (data) {
+        return _.extend({
+          id: 1,
+          email: 'foo@foo.com',
+          name: 'Foo Bar',
+          username: 'foo',
+          nickname: 'foobar',
+          uid: 'foo@foo.com',
+          provider: "email",
+          image: "https://lh6.googleusercontent.com/-QE-jtro9Brs/AAAAAAAAAAI/AAAAAAAAAAw/vJ0Msp_Ob1o/photo.jpg?sz=50",
+          created_at: null,
+          updated_at: null
+        }, data);
+      };
+
+      return resourceFactory;
+    })
+
+    .factory('responsesFactory', function (resourceFactory) {
       return {
         loginValid: function (data) {
           return [200, {
@@ -84,6 +105,33 @@ angular.module('apimocks', ['ngMockE2E'])
               updated_at: null
             }
           }];
+        },
+        usersGET: function (data) {
+          var users = _.map([{
+            id: 1,
+            email: 'foo@foo.com',
+            name: 'Foo Bar',
+            username: 'foo',
+            nickname: 'foobar',
+            uid: 'foo@foo.com'
+          },{
+            id: 2,
+            email: 'bar@bar.com',
+            name: 'Bar Baz',
+            username: 'bar',
+            nickname: 'barbaz',
+            uid: 'bar@bar.com'
+          },{
+            id: 3,
+            email: 'baz@baz.com',
+            name: 'Baz Qux',
+            username: 'baz',
+            nickname: 'bazqux',
+            uid: 'baz@baz.com'
+          }], function(u) { return resourceFactory.user(u) });
+
+          console.log(users);
+          return [200, users];
         }
       }
     })
@@ -111,6 +159,9 @@ angular.module('apimocks', ['ngMockE2E'])
         validateToken: function (method, url, data, headers) {
           //TODO: conditions to return invalid header? only uid, client, access-token in req headers
           return responsesFactory.tokenValid(data, headers);
+        },
+        usersGET: function (method, url, data, headers) {
+          return responsesFactory.usersGET(data);
         }
       };
     })
@@ -131,6 +182,7 @@ angular.module('apimocks', ['ngMockE2E'])
     .run(function ($httpBackend, res) {
       var apiUrl = '<%= api_protocol %>://<%= api_url %>',
           authUrl = apiUrl + '/auth',
+          apiBaseUrl = apiUrl + '/api/v1',
           oauthProvider = 'google_oauth2';
       $httpBackend.whenPOST(authUrl).respond(res.with('signup'));
       $httpBackend.whenPOST(authUrl + '/sign_in').respond(res.with('login'));
@@ -146,6 +198,8 @@ angular.module('apimocks', ['ngMockE2E'])
       $httpBackend.whenGET(authUrl + '/' + oauthProvider).passThrough();
       $httpBackend.whenGET(authUrl + '/' + oauthProvider + '/callback').passThrough();
       $httpBackend.whenPOST(authUrl + '/' + oauthProvider + '/callback').passThrough();
+
+      $httpBackend.whenGET(apiBaseUrl + '/users.json').respond(res.with('usersGET'));
 
       // For everything else, don't mock
       var all_api_routes = /<%= api_url %>.*/;
