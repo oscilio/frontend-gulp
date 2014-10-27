@@ -1,17 +1,10 @@
 angular.module('app')
-    .service('EnvService', function (CFG) {
-      var EnvService = {};
-
-      EnvService.apiUrl = '//' + CFG.apiUrl;
-      return EnvService;
+    .factory('Users', function ($resource, ENV) {
+      return $resource(ENV.apiUrl + '/api/v1/users.json');
     })
 
-    .factory('Users', function ($resource, EnvService) {
-      return $resource(EnvService.apiUrl + '/api/v1/users', {format: 'json'});
-    })
-
-    .factory('Sounds', function ($resource, EnvService) {
-      //return $resource(EnvService.apiUrl + '/api/v1/sounds', {format: 'json'});
+    .factory('Sounds', function ($resource, ENV) {
+      //return $resource(ENV.apiUrl + '/api/v1/sounds.json', {format: 'json'});
       return {
         queryTopSounds: function() {
           return [{

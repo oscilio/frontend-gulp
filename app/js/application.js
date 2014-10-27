@@ -28,6 +28,10 @@ angular.module('app',
 
       $urlRouterProvider.otherwise('/home');
 
+      function authRoute($auth) {
+        return $auth.validateUser();
+      }
+
       $stateProvider
           .state('home', {
             url: "/home",
@@ -63,23 +67,21 @@ angular.module('app',
           .state('users', {
             url: "/users",
             templateUrl: "users/index.html",
-            controller: "UsersIndexCtrl",
+            controller: "UsersCtrl",
             resolve: {
-              auth: function($auth) {
-                return $auth.validateUser();
-              }
+              auth: authRoute
             }
           });
 
     })
 
-    .constant('CFG', {
-      apiUrl: '<%= api_url %>'
+    .constant('ENV', {
+      apiUrl: '<%= api_protocol %>://<%= api_url %>'
     })
 
-    .config(function($authProvider, CFG) {
+    .config(function($authProvider, ENV) {
       $authProvider.configure({
-        apiUrl: '<%= api_protocol %>://' + CFG.apiUrl,
+        apiUrl: ENV.apiUrl,
         validateOnPageLoad: true,
         authProviderPaths: {
           google_oauth2: '/auth/google_oauth2'
