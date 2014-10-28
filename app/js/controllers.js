@@ -56,12 +56,20 @@ angular.module('app')
               .catch(function (res) {
                 console.log(res);
                 if (res.status == 401 || res.status == 403) {
-                  $scope.signupAlerts = _.flatten(
-                      _.map(res.data.errors, function (v, k) {
-                        return _.map(v, function (msg) {
-                          return {type: "error", msg: k + " " + msg};
-                        });
-                      }));
+                  $scope.signupAlerts = function () {
+                    if (Array.isArray(res.data.errors)) {
+                      return _.map(res.data.errors, function (msg) {
+                        return {type: "error", msg: msg};
+                      });
+                    } else {
+                      _.flatten(
+                          _.map(res.data.errors, function (v, k) {
+                            return _.map(v, function (msg) {
+                              return {type: "error", msg: k + " " + msg};
+                            });
+                          }));
+                    }
+                  }();
                 }
                 $scope.openSignupModal();
               });
