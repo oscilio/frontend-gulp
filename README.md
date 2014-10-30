@@ -46,6 +46,10 @@ Not set up yet
 
 TODO: setup gulp-protractor-qa
 
+## License
+
+[MIT License](http://dcunited001.mit-license.org)
+
 ## References
 
 ### Events - broadcasting, emitting and using $rootScope
