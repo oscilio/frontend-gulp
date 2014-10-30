@@ -40,16 +40,12 @@ angular.module('apimocks', ['ngMockE2E'])
         signinValid: function (data, hdr) {
           var resHdr = resourceFactory.ngTokenAuthHeaders(_.extend(hdr, {uid: data.email}));
           return [200, {
-            "data": {
-              id: 2,
+            "data": resourceFactory.user({
               username: data.username,
               email: data.email,
-              name: null,
-              nickname: null,
-              image: null,
               provider: "email",
               uid: data.email
-            }
+            })
           }, resHdr];
         },
         signinInvalid: function (data) {
@@ -70,16 +66,12 @@ angular.module('apimocks', ['ngMockE2E'])
         tokenValid: function (data, hdr) {
           return [200, {
             success: true,
-            data: {
+            data: resourceFactory.user({
               email: (hdr.uid && /@/.test(hdr.uid)) ? hdr.uid : 'someuser@gmail.com',
-              id: 1,
-              image: "https://lh6.googleusercontent.com/-QE-jtro9Brs/AAAAAAAAAAI/AAAAAAAAAAw/vJ0Msp_Ob1o/photo.jpg?sz=50",
-              name: "Email Oscillator",
-              nickname: null,
               provider: (hdr.uid && /@/.test(hdr.uid)) ? "email" : "google_oauth2",
               uid: hdr.uid || "101629501302231591688",
               username: data.username
-            }
+            })
           }, resourceFactory.ngTokenAuthHeaders(hdr)];
         },
         tokenInvalid: function () {
@@ -90,18 +82,12 @@ angular.module('apimocks', ['ngMockE2E'])
         signupValid: function (data) {
           return [200, {
             success: true,
-            data: {
-              id: 4,
+            data: resourceFactory.user({
               email: data.email,
               username: data.username,
-              image: null,
-              name: null,
-              nickname: null,
               provider: "email",
-              uid: data.email,
-              created_at: "2014-10-22T07:03:15.304Z",
-              updated_at: "2014-10-22T07:03:15.304Z"
-            }
+              uid: data.email
+            })
           }];
         },
         signupInvalid: function (data, errors) {
@@ -109,18 +95,17 @@ angular.module('apimocks', ['ngMockE2E'])
           return [403, {
             status: "error",
             errors: errors,
-            data: {
+            data: resourceFactory.user({
               id: null,
               email: data.email,
               username: data.username,
               image: null,
               name: null,
               nickname: null,
-              provider: "email",
               uid: data.email,
               created_at: null,
               updated_at: null
-            }
+            })
           }];
         },
         usersGET: function (data) {
