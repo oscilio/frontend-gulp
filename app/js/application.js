@@ -7,10 +7,11 @@ angular.module('app',
       'ui.router',
       'ng-token-auth',
       'app.auth',
+      'ui.gravatar',
       'angulartics',
       'angulartics.google.analytics'])
 
-    .config(function ($stateProvider, $locationProvider, $urlRouterProvider) {
+    .config(function ($stateProvider, $locationProvider, $urlRouterProvider, gravatarServiceProvider) {
 
       // states: unauthenticated
       // home - / - prompt to signup
@@ -73,6 +74,10 @@ angular.module('app',
             }
           });
 
+      gravatarServiceProvider.defaults = {
+        size: 100,
+        default: 'retro'
+      };
     })
 
     .constant('ENV', {

@@ -43,4 +43,14 @@ angular.module('app')
         },
         templateUrl: 'directives/explore-sound.html'
       };
+    })
+
+    .directive('userProfilePic', function () {
+      return {
+        templateUrl: 'directives/user-profile-pic.html',
+        scope: {
+          image: '=image',
+          email: '=email'
+        }
+      };
     });

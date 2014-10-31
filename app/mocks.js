@@ -110,6 +110,14 @@ angular.module('apimocks', ['ngMockE2E'])
         },
         usersGET: function (data) {
           var users = _.map([{
+            id: 0,
+            email: 'dconner.pro@gmail.com',
+            image: null,
+            name: 'David Conner ',
+            username: 'dcunit3d',
+            nickname: 'day',
+            uid: 'dconner.pro@gmail.com'
+          }, {
             id: 1,
             email: 'foo@foo.com',
             name: 'Foo Bar',

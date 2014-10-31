@@ -116,7 +116,9 @@ var vendorJsFiles = [
   "vendor/bower/ng-token-auth/dist/ng-token-auth.js",
   "vendor/bower/angulartics/src/angulartics.js",
   "vendor/bower/angulartics/src/angulartics-ga.js",
-  "vendor/bower/restangular/dist/restangular.js"
+  "vendor/bower/restangular/dist/restangular.js",
+  "vendor/bower/angular-gravatar/build/md5.js",
+  "vendor/bower/angular-gravatar/build/angular-gravatar.js"
 ];
 
 var appJsFiles = [
