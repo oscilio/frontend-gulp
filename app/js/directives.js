@@ -38,19 +38,33 @@ angular.module('app')
       return {
         restrict: 'E',
         replace: true,
+        templateUrl: 'directives/explore-sound.html',
         scope: {
           sound: '='
-        },
-        templateUrl: 'directives/explore-sound.html'
+        }
       };
+    })
+
+    .directive('userListing', function() {
+      return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: 'directives/user-listing.html',
+        scope: {
+          user: '='
+        },
+        link: function (scope, el, attr) {
+          scope.isAdmin = scope.user.isAdmin();
+        }
+      }
     })
 
     .directive('userProfilePic', function () {
       return {
         templateUrl: 'directives/user-profile-pic.html',
         scope: {
-          image: '=image',
-          email: '=email'
+          image: '=',
+          email: '='
         }
       };
     });

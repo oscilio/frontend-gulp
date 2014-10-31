@@ -1,6 +1,15 @@
 angular.module('app')
     .factory('Users', function ($resource, ENV) {
-      return $resource(ENV.apiUrl + '/api/v1/users.json');
+      var User = $resource(ENV.apiUrl + '/api/v1/users.json');
+
+      User.prototype.isAdmin = function() {
+        return _.chain(this.roles)
+            .map(function (r) { return r.name })
+            .contains('admin')
+            .value();
+      };
+
+      return User;
     })
 
     .factory('Sounds', function ($resource, ENV) {

@@ -1,0 +1,12 @@
+<div id="user-{{sound.id}}" class="panel panel-default" ng-class="{'panel-info': isAdmin}">
+  <div class="panel-heading">
+    &nbsp;{{ user.username }}
+    <span ng-if="isAdmin" class="pull-right">
+      <span class="label label-primary"><i class="fa fa-user fa-fw"></i>&nbsp;Admin</span>
+    </span>
+  </div>
+
+  <div class="panel-body">
+    <user-profile-pic image="user.image" email="user.email"/>
+  </div>
+</div>

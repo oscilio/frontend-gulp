@@ -27,7 +27,7 @@ angular.module('apimocks', ['ngMockE2E'])
           uid: 'foo@foo.com',
           provider: "email",
           image: "https://lh6.googleusercontent.com/-QE-jtro9Brs/AAAAAAAAAAI/AAAAAAAAAAw/vJ0Msp_Ob1o/photo.jpg?sz=50",
-          roles: [{name: "admin"}],
+          roles: [],
           created_at: null,
           updated_at: null
         }, data);
@@ -117,7 +117,8 @@ angular.module('apimocks', ['ngMockE2E'])
             name: 'David Conner ',
             username: 'dcunit3d',
             nickname: 'day',
-            uid: 'dconner.pro@gmail.com'
+            uid: 'dconner.pro@gmail.com',
+            roles: [{name: "admin"}]
           }, {
             id: 1,
             email: 'foo@foo.com',

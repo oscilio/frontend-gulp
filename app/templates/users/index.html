@@ -1,5 +1,5 @@
-<div ng-repeat="user in users" class="row">
-  <em>{{ user.username }}</em>
-  <p>{{ user.email }}</p>
-  <user-profile-pic image="user.image" email="user.email"/>
+<div class="row">
+  <div class="col-sm-3" ng-repeat="user in users">
+    <user-listing user="user"/>
+  </div>
 </div>
