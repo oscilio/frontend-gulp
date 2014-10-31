@@ -27,6 +27,7 @@ angular.module('apimocks', ['ngMockE2E'])
           uid: 'foo@foo.com',
           provider: "email",
           image: "https://lh6.googleusercontent.com/-QE-jtro9Brs/AAAAAAAAAAI/AAAAAAAAAAw/vJ0Msp_Ob1o/photo.jpg?sz=50",
+          roles: [{name: "admin"}],
           created_at: null,
           updated_at: null
         }, data);
